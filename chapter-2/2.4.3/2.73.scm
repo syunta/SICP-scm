@@ -62,7 +62,28 @@
   (put 'deriv '* deriv-product)
   'done)
 
+(define (base e) (cadr e))
+(define (exponent e) (caddr e))
+
+(define (make-exponentiation x y)
+  (cond ((=number? y 0) 1)
+        ((=number? y 1) x)
+        (else (list '** x y))))
+
+(define (install-exponentiation-package)
+  (define (deriv-exponentiation operands var)
+    (let ((ex (apply make-exponentiation operands)))
+      (make-product
+        (exponent ex)
+        (make-product (make-exponentiation (base ex)
+                                           (- (exponent ex) 1))
+                      (deriv (base ex) var)))))
+
+  (put 'deriv '** deriv-exponentiation)
+  'done)
+
 (define (main args)
   (print (install-sum-package))
   (print (install-product-package))
-  (print (deriv '(* (* x y) (+ x 3)) 'x)))
+  (print (install-exponentiation-package))
+  (print (deriv '(** x 4) 'x)))
