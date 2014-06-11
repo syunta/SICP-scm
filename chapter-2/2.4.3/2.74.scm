@@ -21,16 +21,27 @@
 ; この順序付けを実装していると問題の本筋から外れてしまうので
 ; 今回は name を数値で表現することにする
 
+; b
+;
+; この演算が働くためには、引数として受け取るレコードが、
+; レコードの集合の型情報を持つよう構造化されている必要がある
+ 
+; よって、a で実装した get-record は record をそのまま返していたが、
+; これに、型情報を付加した上で record を返す修正が必要となる
+
+; 実装の統一感を出すため、get-name , get-value の引数に対しても、型情報を含める形に変更を加えた
+
 (define (get-record personnel-file name)
   (let ((tags (type-tag personnel-file)))
     ((get 'get-record (file-type tags)) name
-                                        tags
-                                        (contents personnel-file))))
-(define (get-name tags record)
-  ((get 'get-name (record-type tags)) tags record))
+                                        personnel-file)))
+(define (get-name record)
+  (let ((tags (type-tag record)))
+    ((get 'get-name (record-type tags)) record)))
 
-(define (get-value tags set-of-key-value)
-  ((get 'get-value (key-value-type tags)) set-of-key-value))
+(define (get-value set-of-key-value)
+  (let ((tags (type-tag set-of-key-value)))
+    ((get 'get-value (key-value-type tags)) set-of-key-value)))
 
 (define (attach-tag type-tag contents)
   (cons type-tag contents))
@@ -50,49 +61,59 @@
 (define (key-value-type tags) (caddr tags))
 
 (define (install-unordered-list-package)
-  (define (lookup given-key tags set-of-records)
-    (if (null? set-of-records)
-      (error "Not found")
-      (let ((record (car set-of-records)))
-        (if (= given-key (get-name tags record))
-          record
-          (lookup given-key tags (cdr set-of-records))))))
+  (define (lookup given-key personnel-file)
+    (let ((set-of-records (contents personnel-file))
+          (tags (type-tag personnel-file)))
+      (if (null? set-of-records)
+        (error "Not found")
+        (let ((record (attach-tag tags (car set-of-records))))
+          (if (= given-key (get-name record))
+            record
+            (lookup given-key
+                    (attach-tag tags (cdr set-of-records))))))))
   (put 'get-record 'unordered-list lookup)
   'done)
 
 (define (install-ordered-list-package)
-  (define (lookup given-key tags set-of-records)
-    (if (null? set-of-records)
-      (error "Not found")
-      (let ((record (car set-of-records)))
-        (let ((name (get-name tags record)))
-          (cond ((< given-key name) (error "Not found"))
-                ((= given-key name) record)
-                (else (lookup given-key tags (cdr set-of-records))))))))
+  (define (lookup given-key personnel-file)
+    (let ((set-of-records (contents personnel-file))
+          (tags (type-tag personnel-file)))
+      (if (null? set-of-records)
+        (error "Not found")
+        (let ((record (attach-tag tags (car set-of-records))))
+          (let ((name (get-name record)))
+            (cond ((< given-key name) (error "Not found"))
+                  ((= given-key name) record)
+                  (else (lookup given-key
+                                (attach-tag tags (cdr set-of-records))))))))))
   (put 'get-record 'ordered-list lookup)
   'done)
 
 (define (install-jp-record-package)
-  (define (get-name tags record)
-    (let ((name-value (car record)))
-      (get-value tags name-value)))
+  (define (get-name tag-record)
+    (let ((tags (type-tag tag-record))
+          (record (contents tag-record)))
+      (let ((name-value (attach-tag tags (car record))))
+        (get-value name-value))))
   (put 'get-name 'jp get-name)
   'done)
 
 (define (install-us-record-package)
-  (define (get-name tags record)
-    (let ((name-value (cadr record)))
-      (get-value tags name-value)))
+  (define (get-name tag-record)
+    (let ((tags (type-tag tag-record))
+          (record (contents tag-record)))
+      (let ((name-value (attach-tag tags (cadr record))))
+        (get-value name-value))))
   (put 'get-name 'us get-name)
   'done)
 
 (define (install-plain-key-value-package)
-  (define (get-value set-of-key-value) set-of-key-value)
+  (define (get-value tag-key-value) (contents tag-key-value))
   (put 'get-value 'plain get-value)
   'done)
 
 (define (install-standard-key-value-package)
-  (define (get-value set-of-key-value) (cadr set-of-key-value))
+  (define (get-value tag-key-value) (cadr (contents tag-key-value)))
   (put 'get-value 'standard get-value)
   'done)
 
