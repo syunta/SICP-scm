@@ -39,6 +39,10 @@
   (let ((tags (type-tag record)))
     ((get 'get-name (record-type tags)) record)))
 
+(define (get-salary record)
+  (let ((tags (type-tag record)))
+    ((get 'get-salary (record-type tags)) record)))
+
 (define (get-value set-of-key-value)
   (let ((tags (type-tag set-of-key-value)))
     ((get 'get-value (key-value-type tags)) set-of-key-value)))
@@ -95,7 +99,15 @@
           (record (contents tag-record)))
       (let ((name-value (attach-tag tags (car record))))
         (get-value name-value))))
+
+  (define (get-salary tag-record)
+    (let ((tags (type-tag tag-record))
+          (record (contents tag-record)))
+      (let ((name-value (attach-tag tags (cadr record))))
+        (get-value name-value))))
+
   (put 'get-name 'jp get-name)
+  (put 'get-salary 'jp get-salary)
   'done)
 
 (define (install-us-record-package)
@@ -104,7 +116,15 @@
           (record (contents tag-record)))
       (let ((name-value (attach-tag tags (cadr record))))
         (get-value name-value))))
+
+  (define (get-salary tag-record)
+    (let ((tags (type-tag tag-record))
+          (record (contents tag-record)))
+      (let ((name-value (attach-tag tags (caar record))))
+        (get-value name-value))))
+
   (put 'get-name 'us get-name)
+  (put 'get-salary 'us get-salary)
   'done)
 
 (define (install-plain-key-value-package)
@@ -117,13 +137,15 @@
   (put 'get-value 'standard get-value)
   'done)
 
-(define jp-file '(((name 2) (salary 1000) (address Tokyo  ))
-                  ((name 6) (salary 2000) (address Nagano ))
-                  ((name 8) (salary 7000) (address Tottori))))
+(define jp-file (attach-tag '(ordered-list jp standard)
+                            '(((name 2) (salary 1000) (address Tokyo  ))
+                              ((name 6) (salary 2000) (address Nagano ))
+                              ((name 8) (salary 7000) (address Tottori)))))
 
-(define us-file '(((10 L.A    ) 5)
-                  ((15 NewYork) 2)
-                  ((40 Boston ) 7)))
+(define us-file (attach-tag '(unordered-list us plain)
+                            '(((10 L.A    ) 5)
+                              ((15 NewYork) 2)
+                              ((40 Boston ) 7))))
 
 (define (main args)
   (install-unordered-list-package)
@@ -132,5 +154,5 @@
   (install-us-record-package)
   (install-plain-key-value-package)
   (install-standard-key-value-package)
-  (print (get-record (attach-tag '(ordered-list jp standard) jp-file) '6))
-  (print (get-record (attach-tag '(unordered-list us plain) us-file) '7)))
+  (print (get-salary (get-record jp-file '6)))
+  (print (get-salary (get-record us-file '7))))
