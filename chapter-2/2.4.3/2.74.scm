@@ -31,6 +31,19 @@
 
 ; 実装の統一感を出すため、get-name , get-value の引数に対しても、型情報を含める形に変更を加えた
 
+; c
+;
+; name に重複があった場合は、リストにまとめて返すこととした
+; これまで get-recordでは record が見つからなかった場合、エラーを返していたが、 nil を返すよう修正しておく
+
+(define (find-employee-record files name)
+    (if (null? files)
+      nil
+      (let ((record (get-record (car files) name)))
+        (if (null? record)
+          (find-employee-record (cdr files) name)
+          (cons (contents record) (find-employee-record (cdr files) name))))))
+
 (define (get-record personnel-file name)
   (let ((tags (type-tag personnel-file)))
     ((get 'get-record (file-type tags)) name
@@ -69,7 +82,7 @@
     (let ((set-of-records (contents personnel-file))
           (tags (type-tag personnel-file)))
       (if (null? set-of-records)
-        (error "Not found")
+        nil
         (let ((record (attach-tag tags (car set-of-records))))
           (if (= given-key (get-name record))
             record
@@ -83,10 +96,10 @@
     (let ((set-of-records (contents personnel-file))
           (tags (type-tag personnel-file)))
       (if (null? set-of-records)
-        (error "Not found")
+        nil
         (let ((record (attach-tag tags (car set-of-records))))
           (let ((name (get-name record)))
-            (cond ((< given-key name) (error "Not found"))
+            (cond ((< given-key name) nil)
                   ((= given-key name) record)
                   (else (lookup given-key
                                 (attach-tag tags (cdr set-of-records))))))))))
@@ -147,6 +160,8 @@
                               ((15 NewYork) 2)
                               ((40 Boston ) 7))))
 
+(define files (list jp-file us-file))
+
 (define (main args)
   (install-unordered-list-package)
   (install-ordered-list-package)
@@ -155,4 +170,5 @@
   (install-plain-key-value-package)
   (install-standard-key-value-package)
   (print (get-salary (get-record jp-file '6)))
-  (print (get-salary (get-record us-file '7))))
+  (print (get-salary (get-record us-file '7)))
+  (print (find-employee-record files '2)))
