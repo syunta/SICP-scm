@@ -36,6 +36,11 @@
 ; name に重複があった場合は、リストにまとめて返すこととした
 ; これまで get-recordでは record が見つからなかった場合、エラーを返していたが、 nil を返すよう修正しておく
 
+; d
+;
+; これまでに実装してきた (install-***-package) のように、
+; 合併した事業所のデータ構造にあわせて package を追加してあげればよい
+
 (define (find-employee-record files name)
     (if (null? files)
       nil
