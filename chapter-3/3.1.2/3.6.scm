@@ -1,5 +1,8 @@
-(define (rand-update x) ;適当に仮実装
-  (+ x 3))
+(define (rand-update x)
+  (let ((seed-a 17)
+        (seed-b 31)
+        (seed-c 100))
+    (modulo (+ (* seed-a x) seed-b) seed-c)))
 
 (define rand-init 10) ;適当に仮実装
 
@@ -16,5 +19,7 @@
     dispatch))
 
 (print (rand 'generate))
+(print (rand 'generate))
 (print ((rand 'reset) 100))
+(print (rand 'generate))
 (print (rand 'generate))
