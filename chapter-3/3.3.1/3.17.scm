@@ -3,15 +3,16 @@
 
 (define nil '())
 
-(define count-pairs
+(define (count-pairs x)
   (let ((counted nil))
-    (lambda (x)
+    (define (go x)
       (cond ((not (pair? x)) 0)
             ((memq x counted) 0)
             (else (set! counted (cons x counted))
-                  (+ (count-pairs (car x))
-                     (count-pairs (cdr x))
-                     1))))))
+                  (+ (go (car x))
+                     (go (cdr x))
+                     1))))
+    (go x)))
 
 (define x '(a b c))
 ;Benの手続きでは7を返していたリストを作る
