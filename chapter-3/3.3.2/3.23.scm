@@ -101,7 +101,7 @@
 (rear-insert-queue! q1 'c)
 (front-insert-queue! q1 'd)
 (print-queue q1)
-;=> (a b c d)
+;=> (d a b c)
 (rear-delete-queue! q1)
 (front-delete-queue! q1)
 (print-queue q1)
