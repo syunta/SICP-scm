@@ -51,11 +51,11 @@
         (insert! (cdr keys) value (cdr record))
         (let* ((new-record (cons (car keys) (make-table)))
                (new-records (cons new-record records)))
-          (begin (set-cdr! table new-records)
-                 (let ((new-insert-point (assoc (car keys) (cdr table))))
-                   (insert! (cdr keys)
-                            value
-                            (cdr new-insert-point)))))))))
+          (set-cdr! table new-records)
+          (let ((new-insert-point (assoc (car keys) (cdr table))))
+            (insert! (cdr keys)
+                     value
+                     (cdr new-insert-point))))))))
 
 (define *table* (make-table))
 (print (insert! '(2 5) 10 *table*))
