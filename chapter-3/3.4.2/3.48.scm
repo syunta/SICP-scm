@@ -1,7 +1,16 @@
 ; デッドロックを回避する理由
 ; 複数の共有資源へのアクセス順を統一することで回避できる
 
-(define (make-account-and-serializer id balance)
+(define generate-id
+  (let ((id 0)
+        (mutex (make-mutex)))
+    (lambda ()
+      (mutex 'acquire)
+      (set! id (+ id 1))
+      (mutex 'release)
+      id)))
+
+(define (make-account-and-serializer balance)
   (define (withdraw amount)
     (if (>= balance amount)
       (begin (set! balance (- balance amount))
@@ -10,7 +19,8 @@
   (define (deposit amount)
     (set! balance (+ balance amount))
     balance)
-  (let ((balance-serializer (make-serializer)))
+  (let ((balance-serializer (make-serializer))
+        (id (generate-id)))
     (define (dispatch m)
       (cond ((eq? m 'withdraw) withdraw)
             ((eq? m 'deposit) deposit)
@@ -22,14 +32,14 @@
     dispatch))
 
 (define (serialized-exchange account1 account2)
-  (define (exec first second)
-    (let ((serializer1 (first 'serializer))
-          (serializer2 (second 'serializer)))
+  (define (do-exchange account1 account2)
+    (let ((serializer1 (account1 'serializer))
+          (serializer2 (account2 'serializer)))
       ((serializer2 (serializer1 exchange))
-       first
-       second)))
+       account1
+       account2)))
   (let ((id1 (account1 'id))
         (id2 (account2 'id)))
     (if (< id1 id2)
-      (exec account1 account2)
-      (exec account2 account1))))
+      (do-exchange account1 account2)
+      (do-exchange account2 account1))))
