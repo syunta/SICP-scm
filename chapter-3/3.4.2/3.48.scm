@@ -1,4 +1,7 @@
-(define (make-account-and-serializer balance)
+; デッドロックを回避する理由
+; 複数の共有資源へのアクセス順を統一することで回避できる
+
+(define (make-account-and-serializer id balance)
   (define (withdraw amount)
     (if (>= balance amount)
       (begin (set! balance (- balance amount))
@@ -11,6 +14,7 @@
     (define (dispatch m)
       (cond ((eq? m 'withdraw) withdraw)
             ((eq? m 'deposit) deposit)
+            ((eq? m 'id) id)
             ((eq? m 'balance) balance)
             ((eq? m 'serializer) balance-serializer)
             (else (error "Unknown request -- MAKE-ACCOUNT"
@@ -18,8 +22,14 @@
     dispatch))
 
 (define (serialized-exchange account1 account2)
-  (let ((serializer1 (account1 'serializer))
-        (serializer2 (account2 'serializer)))
-    ((serializer1 (serializer2 exchange))
-     account1
-     account2)))
+  (define (exec first second)
+    (let ((serializer1 (first 'serializer))
+          (serializer2 (second 'serializer)))
+      ((serializer2 (serializer1 exchange))
+       first
+       second)))
+  (let ((id1 (account1 'id))
+        (id2 (account2 'id)))
+    (if (< id1 id2)
+      (exec account1 account2)
+      (exec account2 account1))))
