@@ -3,12 +3,11 @@
 
 (define generate-id
   (let ((id 0)
-        (mutex (make-mutex)))
-    (lambda ()
-      (mutex 'acquire)
-      (set! id (+ id 1))
-      (mutex 'release)
-      id)))
+        (serializer (make-serializer)))
+    (serializer
+      (lambda ()
+        (set! id (+ id 1))
+        id))))
 
 (define (make-account-and-serializer balance)
   (define (withdraw amount)
