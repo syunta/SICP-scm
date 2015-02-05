@@ -7,13 +7,13 @@
       (mutex 'acquire)
       (cond ((<= 1 avail)
              (set! avail (- avail 1))
-             (mutex 'acquire))
+             (mutex 'release))
             (else
               (mutex 'release)
               (acquire)))) ;retry
     (define (release)
       (mutex 'acquire)
-      (cond ((= n avail)
+      (cond ((> n avail)
              (set! avail (+ avail 1))
              (mutex 'release))
             (else
