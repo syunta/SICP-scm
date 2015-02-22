@@ -18,11 +18,11 @@
     ((and (equal? x (car seq)) (equal? y (cadr seq))) #t)
     (else (adjacent? x y (cdr seq)))))
 
-(define (any? pred seq)
-  (cond
-    ((null? seq) #f)
-    ((pred (car seq)) #t)
-    (else (any? pred (cdr seq)))))
+(define (any pred seq)
+  (if (null? seq)
+    #f
+    (or (pred (car seq))
+        (any pred (cdr seq)))))
 
 ;; procedures have initial is 'B'
 (define (butlast seq)
