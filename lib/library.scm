@@ -33,8 +33,8 @@
 (define (butlast-n seq n)
   (let ((len (length seq)))
     (let ((m (if (> n len)
-              len
-              n)))
+               len
+               n)))
       (take seq (- len m)))))
 
 (define (before? x y seq)
@@ -71,13 +71,13 @@
   (cond
     ((zero? n) (list nil))
     ((null? seq) (list nil))
-    (else (flatmap
-      (lambda (x) (if (< (length (cdr (member x seq))) (- n 1))
-                    nil
-                    (map 
-                      (lambda (y) (cons x y))
-                      (combination (- n 1) (cdr (member x seq))))))
-      seq))))
+    (else (flatmap (lambda (x)
+                     (if (< (length (cdr (member x seq))) (- n 1))
+                       nil
+                       (map
+                         (lambda (y) (cons x y))
+                         (combination (- n 1) (cdr (member x seq))))))
+                   seq))))
 
 ;; procedures have initial is 'D'
 (define (double? seq)
@@ -184,7 +184,7 @@
 
 ;; procedures have initial is 'L'
 (define (longer? seq-x seq-y)
-  (if (pair? seq-x) 
+  (if (pair? seq-x)
     (if (pair? seq-y)
       (longer? (cdr seq-x) (cdr seq-y))
       #t)
@@ -201,7 +201,7 @@
     (cond
       ((null? seq) mx)
       ((> (car seq) mx)
-        (max-element (cdr seq) (car seq)))
+       (max-element (cdr seq) (car seq)))
       (else (max-element (cdr seq) mx))))
   (if (null? seq)
     seq
@@ -212,28 +212,28 @@
     (cond
       ((null? seq) mn)
       ((< (car seq) mn)
-        (min-element (cdr seq) (car seq)))
+       (min-element (cdr seq) (car seq)))
       (else (min-element (cdr seq) mn))))
   (if (null? seq)
     seq
     (min-element seq (car seq))))
 
 (define (merge-list op xs ys)
-    (cond
-      ((null? xs) ys)
-      ((null? ys) xs)
-      ((op (car xs) (car ys))
-       (cons (car xs) (merge-list op (cdr xs) ys)))
-      (else (cons (car ys) (merge-list op xs (cdr ys))))))
+  (cond
+    ((null? xs) ys)
+    ((null? ys) xs)
+    ((op (car xs) (car ys))
+     (cons (car xs) (merge-list op (cdr xs) ys)))
+    (else (cons (car ys) (merge-list op xs (cdr ys))))))
 
 (define (merge-sort op seq)
   (define (merge-iter op seq)
     (cond
       ((null? seq) nil)
       ((null? (cdr seq)) seq)
-      (else (merge-iter op (cons
-              (merge-list op (car seq) (cadr seq))
-              (merge-iter op (cddr seq)))))))
+      (else (merge-iter op
+                        (cons (merge-list op (car seq) (cadr seq))
+                              (merge-iter op (cddr seq)))))))
   (define (split seq)
     (group seq 1))
   (car (merge-iter op (split seq))))
@@ -297,19 +297,21 @@
     ((zero? n) (list nil))
     ((null? seq) (list nil))
     (else (flatmap
-      (lambda (x) (map 
-                    (lambda (y) (cons x y))
-                    (permutation (- n 1) (difference seq (list x)))))
-      seq))))
+            (lambda (x)
+              (map (lambda (y)
+                     (cons x y))
+                   (permutation (- n 1) (difference seq (list x)))))
+            seq))))
 
 (define (partition seq)
   (define (partition-rec seq n odds evens)
     (cond
-      ((null? seq) (values (reverse odds) (reverse evens)))
+      ((null? seq)
+       (values (reverse odds) (reverse evens)))
       ((equal? 0 (remainder n 2))
        (partition-rec (cdr seq) (+ n 1) (cons (car seq) odds) evens))
       (else
-       (partition-rec (cdr seq) (+ n 1) odds (cons (car seq) evens)))))
+        (partition-rec (cdr seq) (+ n 1) odds (cons (car seq) evens)))))
   (partition-rec seq 0 nil nil))
 
 (define (pack seq)
@@ -329,7 +331,7 @@
                      (reverse (cons (cons top x) packed))))
       ((equal? (+ x 1) (car seq))
        (pnl-iter (cdr seq) (car seq) top packed))
-      ((equal? x top) 
+      ((equal? x top)
        (pnl-iter (cdr seq) (car seq) (car seq) (cons top packed)))
       (else
         (pnl-iter (cdr seq) (car seq) (car seq) (cons (cons top x) packed)))))
@@ -341,20 +343,22 @@
     ((zero? n) (list nil))
     ((null? seq) (list nil))
     (else (flatmap
-      (lambda (x) (map 
-                    (lambda (y) (cons x y))
-                    (repeat-perm (- n 1) seq)))
-      seq))))
+            (lambda (x)
+              (map (lambda (y)
+                     (cons x y))
+                   (repeat-perm (- n 1) seq)))
+            seq))))
 
 (define (repeat-comb n seq)
   (cond
     ((zero? n) (list nil))
     ((null? seq) (list nil))
     (else (flatmap
-      (lambda (x) (map 
-                    (lambda (y) (cons x y))
-                    (repeat-comb (- n 1) (member x seq))))
-      seq))))
+            (lambda (x)
+              (map (lambda (y)
+                     (cons x y))
+                   (repeat-comb (- n 1) (member x seq))))
+            seq))))
 
 ; procedures have initial is 'S'
 (define (square x)
@@ -422,7 +426,7 @@
       ((>= x (car seq))
        (split-rec (cdr seq) x (cons (car seq) low) high))
       (else
-       (split-rec (cdr seq) x low (cons (car seq) high)))))
+        (split-rec (cdr seq) x low (cons (car seq) high)))))
   (split-rec seq x nil nil))
 
 (define (sieve n)
@@ -452,25 +456,25 @@
     (define (lookup key-1 key-2)
       (let ((subtable (assoc key-1 (cdr local-table))))
         (if subtable
-            (let ((record (assoc key-2 (cdr subtable))))
-              (if record
-                  (cdr record)
-                  #f))
-            #f)))
+          (let ((record (assoc key-2 (cdr subtable))))
+            (if record
+              (cdr record)
+              #f))
+          #f)))
     (define (insert! key-1 key-2 value)
       (let ((subtable (assoc key-1 (cdr local-table))))
         (if subtable
-            (let ((record (assoc key-2 (cdr subtable))))
-              (if record
-                  (set-cdr! record value)
-                  (set-cdr! subtable
-                            (cons (cons key-2 value)
-                                  (cdr subtable)))))
-            (set-cdr! local-table
-                      (cons (list key-1
-                                  (cons key-2 value))
-                            (cdr local-table)))))
-      'ok)    
+          (let ((record (assoc key-2 (cdr subtable))))
+            (if record
+              (set-cdr! record value)
+              (set-cdr! subtable
+                        (cons (cons key-2 value)
+                              (cdr subtable)))))
+          (set-cdr! local-table
+                    (cons (list key-1
+                                (cons key-2 value))
+                          (cdr local-table)))))
+      'ok)
     (define (dispatch m)
       (cond ((eq? m 'lookup-proc) lookup)
             ((eq? m 'insert-proc!) insert!)
