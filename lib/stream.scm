@@ -1,5 +1,7 @@
 (define the-empty-stream '())
 
+(define stream-null? null?)
+
 (define-syntax cons-stream
   (syntax-rules
     ()
