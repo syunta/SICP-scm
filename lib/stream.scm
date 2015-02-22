@@ -44,6 +44,11 @@
                                      (stream-cdr stream))))
         (else (stream-filter pred (stream-cdr stream)))))
 
+(define (stream . args)
+  (fold-right (lambda (x y) (cons-stream x y))
+              the-empty-stream
+              args))
+
 (define (display-stream s)
   (stream-for-each display-line s))
 
