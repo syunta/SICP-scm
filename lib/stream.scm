@@ -1,3 +1,5 @@
+(add-load-path "." :relative) (load "library")
+
 (define the-empty-stream '())
 
 (define stream-null? null?)
@@ -24,7 +26,7 @@
                               (- n 1)))))
 
 (define (stream-map proc . argstreams)
-  (if (stream-null? (car argstreams))
+  (if (any stream-null? argstreams)
     the-empty-stream
     (cons-stream
       (apply proc (map stream-car argstreams))
