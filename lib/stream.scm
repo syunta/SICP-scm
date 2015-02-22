@@ -23,6 +23,14 @@
                  (stream-take (stream-cdr s)
                               (- n 1)))))
 
+(define (stream-map proc . argstreams)
+  (if (stream-null? (car argstreams))
+    the-empty-stream
+    (cons-stream
+      (apply proc (map stream-car argstreams))
+      (apply stream-map
+             (cons proc (map stream-cdr argstreams))))))
+
 (define (stream-for-each proc s)
   (if (stream-null? s)
     'done
