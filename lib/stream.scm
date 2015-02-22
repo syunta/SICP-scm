@@ -13,3 +13,9 @@
   (if (= n 0)
     (stream-car s)
     (stream-ref (stream-cdr s) (- n 1))))
+
+(define (stream-for-each proc s)
+  (if (stream-null? s)
+    'done
+    (begin (proc (stream-car s))
+           (stream-for-each proc (stream-cdr s)))))
