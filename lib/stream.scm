@@ -16,6 +16,13 @@
     (stream-car s)
     (stream-ref (stream-cdr s) (- n 1))))
 
+(define (stream-take s n)
+  (if (< n 0)
+    the-empty-stream
+    (cons-stream (stream-car s)
+                 (stream-take (stream-cdr s)
+                              (- n 1)))))
+
 (define (stream-for-each proc s)
   (if (stream-null? s)
     'done
