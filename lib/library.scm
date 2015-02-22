@@ -127,11 +127,11 @@
 (define (encode seq)
   (map (lambda (xs) (cons (car xs) (length xs))) (pack seq)))
 
-(define (every? pred seq)
-  (cond
-    ((null? seq) #t)
-    ((not (pred (car seq))) #f)
-    (else (every? pred (cdr seq)))))
+(define (every pred seq)
+  (if (null? seq)
+    #t
+    (and (pred (car seq))
+         (every pred (cdr seq)))))
 
 ;; procedures have initial is 'F'
 (define (factorial n)
