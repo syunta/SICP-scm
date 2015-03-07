@@ -66,6 +66,9 @@
   (newline)
   (display x))
 
+(define (scale-stream stream factor)
+  (stream-map (lambda (x) (* x factor)) stream))
+
 (define (add-streams s1 s2)
   (stream-map + s1 s2))
 
