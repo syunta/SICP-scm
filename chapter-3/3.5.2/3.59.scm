@@ -21,3 +21,36 @@
 ;1/6
 ;1/24
 ;1/120
+(newline)
+
+;b
+(define (negate-stream stream)
+  (cons-stream (- (stream-car stream))
+               (negate-stream (stream-cdr stream))))
+
+(define cosine-series
+  (cons-stream 1
+               (negate-stream (integrate-series sine-series))))
+
+(define sine-series
+  (cons-stream 0 (integrate-series cosine-series)))
+
+; testing
+(display-stream (stream-take cosine-series 5))
+;=>
+;1
+;0
+;-1/2
+;0
+;1/24
+;0
+(newline)
+(display-stream (stream-take sine-series 5))
+;=>
+;0
+;1
+;0
+;-1/6
+;0
+;1/120
+(newline)
