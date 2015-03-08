@@ -79,6 +79,11 @@
 
 (define integers (cons-stream 1 (add-streams ones integers)))
 
+(define (integers-starting-from n)
+  (cons-stream n
+               (add-streams ones
+                            (integers-starting-from n))))
+
 (define (merge s1 s2)
   (cond ((stream-null? s1) s2)
         ((stream-null? s2) s1)
