@@ -1,9 +1,11 @@
 (load "../../lib/stream")
 
 (define (partial-sums s)
-  (cons-stream (stream-car s)
-               (add-streams (partial-sums s)
-                            (stream-cdr s))))
+  (define sum
+    (cons-stream (stream-car s)
+                 (add-streams sum
+                              (stream-cdr s))))
+  sum)
 
 (display-stream (stream-take (partial-sums integers) 5))
 ;=>
