@@ -367,6 +367,9 @@
 (define (square x)
   (* x x))
 
+(define (sqrt-improve guess x)
+  (average guess (/ x guess)))
+
 (define (sum-of-squares x y)
   (+ (square x) (square y)))
 
