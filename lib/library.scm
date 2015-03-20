@@ -24,6 +24,9 @@
     (or (pred (car seq))
         (any pred (cdr seq)))))
 
+(define (average . args)
+  (/ (fold + 0.0 args) (length args)))
+
 ;; procedures have initial is 'B'
 (define (butlast seq)
   (if (null? (cdr seq))
