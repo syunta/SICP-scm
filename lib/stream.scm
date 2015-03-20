@@ -98,3 +98,12 @@
                     (cons-stream s1car
                                  (merge (stream-cdr s1)
                                         (stream-cdr s2)))))))))
+
+(define (sqrt-stream x)
+  (define guesses
+    (cons-stream 1.0
+                 (stream-map (lambda (guess)
+                               (sqrt-improve guess x))
+                             guesses)))
+  guesses)
+
