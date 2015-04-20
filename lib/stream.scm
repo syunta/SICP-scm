@@ -123,3 +123,9 @@
 (define (accelerated-sequence transform s)
   (stream-map stream-car
               (make-tableau transform s)))
+
+(define (interleave s1 s2)
+  (if (stream-null? s1)
+    s2
+    (cons-stream (stream-car s1)
+                 (interleave s2 (stream-cdr s1)))))
