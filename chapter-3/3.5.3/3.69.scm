@@ -12,13 +12,15 @@
 (define second cadr)
 (define third  caddr)
 
-(define (i<=j<=k? seq)
-  (and (<= (first seq) (second seq) (third seq))))
-
 (define (triples s t u)
-  (stream-filter i<=j<=k?
-                 (stream-map (lambda (x) (cons (first x) (second x)))
-                             (pairs s (pairs t u)))))
+  (cons-stream
+    (list (stream-car s)
+          (stream-car t)
+          (stream-car u))
+    (interleave
+      (stream-map (lambda (x) (cons (stream-car s) x))
+                  (pairs (stream-cdr t) (stream-cdr u)))
+      (triples (stream-cdr s) (stream-cdr t) (stream-cdr u)))))
 
 (define (pythagoras? triple)
   (= (+ (expt (first triple) 2)
@@ -31,8 +33,10 @@
 
 (define (main args)
   (display-stream
-    (stream-take (pythagorases integers integers integers) 2)))
+    (stream-take (pythagorases integers integers integers) 4)))
 ;=>
 ;(3 4 5)
 ;(6 8 10)
 ;(5 12 13)
+;(9 12 15)
+;(8 15 17)
