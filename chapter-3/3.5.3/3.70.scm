@@ -25,6 +25,14 @@
 
 (define (sum-pair pair) (accumlate + 0 pair))
 
+(define (b pair)
+  (+ (* 2 (car pair))
+     (* 3 (cadr pair))
+     (* 5 (car pair) (cadr pair))))
+
+(define (divisible? x divisor)
+  (zero? (remainder x divisor)))
+
 (define (main args)
   (display-stream
     (stream-take (weighted-pairs sum-list integers integers) 10))
@@ -40,4 +48,25 @@
   ;(3 3)
   ;(1 6)
   ;(2 5)
+  (newline)
+  (display-stream
+    (stream-take (stream-filter (lambda (pair)
+                                  (every (lambda (dividend)
+                                           (every (lambda (divisor)
+                                                    (not (divisible? dividend divisor)))
+                                                  '(2 3 5)))
+                                         pair))
+                                (weighted-pairs b integers integers)) 10))
+  ;=>
+  ;(1 1)
+  ;(1 7)
+  ;(1 11)
+  ;(1 13)
+  ;(1 17)
+  ;(1 19)
+  ;(1 23)
+  ;(1 29)
+  ;(1 31)
+  ;(7 7)
+  ;(1 37)
   )
