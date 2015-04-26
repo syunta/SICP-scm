@@ -132,3 +132,6 @@
 
 (define (stream-cddr stream)
   (stream-cdr (stream-cdr stream)))
+
+(define (stream-cdddr stream)
+  (stream-cdr (stream-cdr (stream-cdr stream))))
