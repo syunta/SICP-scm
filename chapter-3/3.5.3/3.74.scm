@@ -14,7 +14,12 @@
 
 (define sense-data (stream 1 2 1.5 1 0.5 -0.1 -2 -3 -2 -0.5 0.2 3 4))
 
-(define zero-crossings (make-zero-crossings sense-data 0))
+;(define zero-crossings (make-zero-crossings sense-data 0))
+
+(define zero-crossings
+  (stream-map sign-change-detector
+              sense-data
+              (cons-stream 0 sense-data)))
 
 (define (main args)
   (display-stream
