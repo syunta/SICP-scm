@@ -23,7 +23,7 @@
                   (stream-cdr t))
       (weighted-pairs weight (stream-cdr s) (stream-cdr t)))))
 
-(define (sum-pair pair) (accumlate + 0 pair))
+(define (sum-pair pair) (accumulate + 0 pair))
 
 (define (b pair)
   (+ (* 2 (car pair))
