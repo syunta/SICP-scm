@@ -35,7 +35,7 @@
 
 (define (main args)
   (display-stream
-    (stream-take (weighted-pairs sum-list integers integers) 10))
+    (stream-take (weighted-pairs sum-pair integers integers) 10))
   ;=>
   ;(1 1)
   ;(1 2)
