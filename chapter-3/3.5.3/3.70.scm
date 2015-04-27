@@ -23,19 +23,19 @@
                   (stream-cdr t))
       (weighted-pairs weight (stream-cdr s) (stream-cdr t)))))
 
-(define (sum-pair pair) (accumulate + 0 pair))
+(define (sum-couple couple) (accumulate + 0 couple))
 
-(define (b pair)
-  (+ (* 2 (car pair))
-     (* 3 (cadr pair))
-     (* 5 (car pair) (cadr pair))))
+(define (b couple)
+  (+ (* 2 (car couple))
+     (* 3 (cadr couple))
+     (* 5 (car couple) (cadr couple))))
 
 (define (divisible? x divisor)
   (zero? (remainder x divisor)))
 
 (define (main args)
   (display-stream
-    (stream-take (weighted-pairs sum-pair integers integers) 10))
+    (stream-take (weighted-pairs sum-couple integers integers) 10))
   ;=>
   ;(1 1)
   ;(1 2)
@@ -50,12 +50,12 @@
   ;(2 5)
   (newline)
   (display-stream
-    (stream-take (stream-filter (lambda (pair)
+    (stream-take (stream-filter (lambda (couple)
                                   (every (lambda (dividend)
                                            (every (lambda (divisor)
                                                     (not (divisible? dividend divisor)))
                                                   '(2 3 5)))
-                                         pair))
+                                         couple))
                                 (weighted-pairs b integers integers)) 10))
   ;=>
   ;(1 1)

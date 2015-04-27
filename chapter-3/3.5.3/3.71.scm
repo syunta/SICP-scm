@@ -1,7 +1,7 @@
 (load "./3.70")
 
-(define (cubic-sum pair)
-  (+ (cube (car pair)) (cube (cadr pair))))
+(define (cubic-sum couple)
+  (+ (cube (car couple)) (cube (cadr couple))))
 
 (define cubic-sums
   (stream-map cubic-sum
