@@ -12,15 +12,16 @@
 (define second cadr)
 (define third  caddr)
 
+(define (delayed-interleave s1 delayed-s2)
+  (cons-stream (stream-car s1)
+               (delayed-interleave (force delayed-s2)
+                                   (delay (stream-cdr s1)))))
+
 (define (triples s t u)
-  (cons-stream
-    (list (stream-car s)
-          (stream-car t)
-          (stream-car u))
-    (interleave
-      (stream-map (lambda (x) (cons (stream-car s) x))
-                  (pairs (stream-cdr t) (stream-cdr u)))
-      (triples (stream-cdr s) (stream-cdr t) (stream-cdr u)))))
+  (delayed-interleave
+    (stream-map (lambda (x) (cons (stream-car s) x))
+                (pairs t u))
+    (delay (triples (stream-cdr s) (stream-cdr t) (stream-cdr u)))))
 
 (define (pythagoras? triple)
   (= (+ (expt (first triple) 2)
@@ -32,6 +33,9 @@
                  (triples s t u)))
 
 (define (main args)
+  (display-stream
+    (stream-take (triples integers integers integers) 20))
+  (newline)
   (display-stream
     (stream-take (pythagorases integers integers integers) 4)))
 ;=>
