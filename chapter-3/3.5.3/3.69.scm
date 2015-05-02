@@ -23,6 +23,17 @@
                 (pairs t u))
     (delay (triples (stream-cdr s) (stream-cdr t) (stream-cdr u)))))
 
+(define (triples-2 s t u)
+  (cons-stream
+    (list (stream-car s) (stream-car t) (stream-car u))
+    (interleave
+      (stream-map (lambda (x) (cons (stream-car s) x))
+                  (pairs (stream-cdr t) (stream-cdr u)))
+      (interleave
+        (stream-map (lambda (x) (list (stream-car s) (stream-car t) x))
+                    (stream-cdr u))
+        (triples (stream-cdr s) (stream-cdr t) (stream-cdr u))))))
+
 (define (pythagoras? triple)
   (= (+ (expt (first triple) 2)
         (expt (second triple) 2))
