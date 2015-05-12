@@ -9,7 +9,7 @@
     (define dvC (scale-stream iL (- (/ 1 C))))
     (define diL (add-streams (scale-stream vC (/ 1 L))
                              (scale-stream iL (- (/ R L)))))
-    (stream-map (lambda (x y) (cons x y)) vC iL)))
+    (stream-map cons vC iL)))
 
 (define (main args)
   (define RLC1 (RLC 1 1 0.2 0.1))
