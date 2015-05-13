@@ -33,6 +33,11 @@
 (define (divisible? x divisor)
   (zero? (remainder x divisor)))
 
+(define not2-3-5 (stream-filter (lambda (dividend)
+                                  (every (lambda (divisor) (not (divisible? dividend divisor)))
+                                         '(2 3 5)))
+                                integers))
+
 (define (main args)
   (display-stream
     (stream-take (weighted-pairs sum-couple integers integers) 10))
@@ -50,13 +55,7 @@
   ;(2 5)
   (newline)
   (display-stream
-    (stream-take (stream-filter (lambda (couple)
-                                  (every (lambda (dividend)
-                                           (every (lambda (divisor)
-                                                    (not (divisible? dividend divisor)))
-                                                  '(2 3 5)))
-                                         couple))
-                                (weighted-pairs b integers integers)) 10))
+    (stream-take (weighted-pairs b not2-3-5 not2-3-5) 10))
   ;=>
   ;(1 1)
   ;(1 7)
