@@ -1,4 +1,9 @@
 (load "../../lib/stream")
+(use srfi-27)
+
+(define (random-real-stream)
+  (cons-stream (random-real)
+               (random-real-stream)))
 
 (define (monte-carlo experiment-stream passed failed)
   (define (next passed failed)
