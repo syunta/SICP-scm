@@ -26,7 +26,7 @@
   (define (area-of-square x1 x2 y1 y2)
     (* (- x1 x2) (- y1 y2)))
   (define (experiment)
-    (P (random-in-range x2 x1) (random-in-range x2 x1)))
+    (P (random-in-range x2 x1) (random-in-range y2 y1)))
   (* (area-of-square x1 x2 y1 y2)
      (monte-carlo n experiment)))
 
