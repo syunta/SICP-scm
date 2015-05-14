@@ -20,3 +20,8 @@
   (if (stream-car experiment-stream)
     (next (+ passed 1) failed)
     (next passed (+ failed 1))))
+
+(define (unit-circle-test x y)
+  (<= (+ (square (- x 0))
+         (square (- y 0)))
+      (square 1)))
