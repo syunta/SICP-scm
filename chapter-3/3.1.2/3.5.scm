@@ -1,7 +1,7 @@
 (use srfi-27)
 
 (define (random x)
-  (/ (random-integer (* x 10000)) 10000))
+  (* x (random-real)))
 
 (define (random-in-range low high)
   (let ((range (- high low)))
@@ -30,4 +30,5 @@
   (* (area-of-square x1 x2 y1 y2)
      (monte-carlo n experiment)))
 
-(print (estimate-integral circle-test 5 -3 6 -2 1000000.0))
+(print (estimate-integral circle-test 5 -3 6 -2 10000000.0))
+;=> 3.1366336
