@@ -5,6 +5,12 @@
   (cons-stream (random-real)
                (random-real-stream)))
 
+(define (random-in-range-stream low high)
+  (let ((range (- high low)))
+    (stream-map (lambda (s) (+ low s))
+                (scale-stream (random-real-stream)
+                              range))))
+
 (define (monte-carlo experiment-stream passed failed)
   (define (next passed failed)
     (cons-stream
