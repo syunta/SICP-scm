@@ -18,9 +18,9 @@
   (iter trials 0))
 
 (define (circle-test x y)
-  (>= (expt 1 2)
-      (+ (expt (- x 0) 2)
-         (expt (- y 0) 2))))
+  (>= (square 1)
+      (+ (square (- x 0))
+         (square (- y 0)))))
 
 (define (estimate-integral P x1 x2 y1 y2 n)
   (define (area-of-square x1 x2 y1 y2)
