@@ -30,4 +30,4 @@
   (* (area-of-square x1 x2 y1 y2)
      (monte-carlo n experiment)))
 
-(print (estimate-integral circle-test 5 (- 3) 6 (- 2) 1000000.0))
+(print (estimate-integral circle-test 5 -3 6 -2 1000000.0))
