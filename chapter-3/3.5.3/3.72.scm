@@ -1,21 +1,37 @@
-(load "./3.71")
+(load "./3.70")
 
-; cubic-sumsの連続する3つの要素が等しいことを調べればよい
+(define (square-sum twins)
+  (+ (square (car twins)) (square (cadr twins))))
 
-(define (Ramanujan-iter s)
-  (let ((s0 (stream-ref s 0))
-        (s1 (stream-ref s 1))
-        (s2 (stream-ref s 2)))
-    (if (and (= s0 s1) (= s0 s2))
-      (cons-stream s0
-                   (Ramanujan-iter (stream-cdddr s)))
-      (Ramanujan-iter (stream-cdr s)))))
+(define (stream-group-by weight s)
+  (define (go s key element)
+    (let ((result (cons key element)))
+      (if (stream-null? s)
+        (cons-stream result
+                     the-empty-stream)
+        (let ((next-key (weight (stream-car s))))
+          (if (= key next-key)
+            (go (stream-cdr s) key (cons (stream-car s) element))
+            (cons-stream result
+                         (go s next-key nil)))))))
+  (go s (weight (stream-car s)) nil))
 
-(define Ramanujan-numbers
-  (Ramanujan-iter cubic-sums))
+(define grouping-square-sums
+  (stream-group-by square-sum
+                   (weighted-pairs square-sum
+                                   integers
+                                   integers)))
 
 (define (main args)
   (display-stream
-    (stream-take Ramanujan-numbers 0))
-  ;=> 87539319
+    (stream-take (stream-filter (lambda (x) (= 3 (length (cdr x))))
+                                grouping-square-sums)
+                 5))
+  ;=>
+  ;(325 (10 15) (6 17) (1 18))
+  ;(425 (13 16) (8 19) (5 20))
+  ;(650 (17 19) (11 23) (5 25))
+  ;(725 (14 23) (10 25) (7 26))
+  ;(845 (19 22) (13 26) (2 29))
+  ;(850 (15 25) (11 27) (3 29))
   )
