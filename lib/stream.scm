@@ -19,11 +19,11 @@
     (stream-ref (stream-cdr s) (- n 1))))
 
 (define (stream-take s n)
-  (if (< n 0)
-    the-empty-stream
-    (cons-stream (stream-car s)
-                 (stream-take (stream-cdr s)
-                              (- n 1)))))
+  (cond ((stream-null? s) the-empty-stream)
+        ((< n 0) the-empty-stream)
+        (else (cons-stream (stream-car s)
+                           (stream-take (stream-cdr s)
+                                        (- n 1))))))
 
 (define (stream-map proc . argstreams)
   (if (any stream-null? argstreams)
