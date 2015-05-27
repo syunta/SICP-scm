@@ -1,10 +1,9 @@
 (load "../../lib/stream")
 
-(define (sign-change-detector v1 v2)
-  (cond ((and (< v1 0) (<= 0 v2)) 1)
-        ((and (<= 0 v1) (<= 0 v2)) 0)
-        ((and (< v1 0) (< v2 0)) 0)
-        (else -1)))
+(define (sign-change-detector current-value last-value)
+  (cond ((and (< current-value 0) (<= 0 last-value)) 1)
+        ((and (<= 0 current-value) (< last-value 0)) -1)
+        (else 0)))
 
 (define (make-zero-crossings input-stream last-value)
   (cons-stream
