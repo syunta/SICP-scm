@@ -17,10 +17,10 @@
 (define (solve-2nd f dt y0 dy0)
   (define y (integral (delay dy) y0 dt))
   (define dy (integral (delay ddy) dy0 dt))
-  (define ddy (stream-map f y dy))
+  (define ddy (stream-map f dy y))
   y)
 
-(define f (lambda (y dy) (+ (* 2 dy) (* 1 y))))
+(define f (lambda (dy y) (+ (* 2 dy) (* 1 y))))
 
 (define (main args)
   (display-stream
