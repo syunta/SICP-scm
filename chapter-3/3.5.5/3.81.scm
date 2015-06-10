@@ -1,7 +1,7 @@
 (load "../../lib/stream")
 
 (define (rand-update x)
-  (let ((a 17) (b 31) (c 100))
+  (let ((a 1664525) (b 1013904223) (c (expt 2 32)))
     (modulo (+ (* a x) b) c)))
 
 (define random-init 10)
