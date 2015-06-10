@@ -6,39 +6,36 @@
 
 (define random-init 10)
 
-(define random-numbers
-  (cons-stream random-init
-               (stream-map rand-update random-numbers)))
-
 (define (rands-requested requests)
-  (define (go reqs rands)
+  (define (go reqs rand)
     (if (null? reqs)
       the-empty-stream
-      (let ((req (stream-car reqs)))
+      (let ((req (stream-car (stream-car reqs))))
         (cond ((eq? req 'generate)
-               (cons-stream (stream-car rands)
-                            (go (stream-cdr reqs) (stream-cdr rands))))
+               (cons-stream rand
+                            (go (stream-cdr reqs) (rand-update rand))))
               ((eq? req 'reset)
-               (cons-stream (stream-car random-numbers)
-                            (go (stream-cdr reqs) (stream-cdr random-numbers))))
+               (let ((new-rand-init (stream-car (stream-cdr (stream-car reqs)))))
+                 (cons-stream new-rand-init
+                              (go (stream-cdr reqs) (rand-update new-rand-init)))))
               (else
                 (error "Unknown request --" req))))))
-  (go requests random-numbers))
+  (go requests random-init))
 
 (define (main args)
-  (define requests (stream 'generate
-                           'generate
-                           'reset
-                           'generate
-                           'generate
-                           'generate))
+  (define requests (stream '(generate)
+                           '(generate)
+                           '(reset 1000)
+                           '(generate)
+                           '(generate)
+                           '(generate)))
   (display-stream
     (stream-take (rands-requested requests) 5))
   ;=>
   ;10
-  ;1
-  ;10
-  ;1
-  ;48
-  ;47
+  ;1030549473
+  ;1000
+  ;2678429223
+  ;4219084122
+  ;2266909937
   )
