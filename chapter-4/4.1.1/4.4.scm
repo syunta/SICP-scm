@@ -1,5 +1,7 @@
 (define (and? exp) (tagged-list? exp 'and))
+(define (or? exp) (tagged-list? exp 'or))
 (define (and-predicates exp) (cdr exp))
+(define (or-predicates exp) (cdr exp))
 (define (first-predicate seq) (car seq))
 (define (rest-predicates seq) (cdr seq))
 
@@ -12,6 +14,14 @@
           'false
           (go (rest-predicate exps) value)))))
   (go exps 'true))
+
+(define (eval-or exps env)
+  (if (null? exps)
+    'false
+    (let ((value (eval (first-predicate exps) env)))
+      (if (true? value))
+      value
+      (eval-or (rest-predicate exps) env))))
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
@@ -28,6 +38,7 @@
          (eval-sequence (begin-actions exp) env))
         ((cond? exp) (eval (cond->if exp) env))
         ((and? exp) (eval-and (and-predicates exp) env))
+        ((or? exp) (eval-or (or-predicates exp) env))
         ((application? exp)
          (apply (eval (operator exp) env)
                 (list-of-values (operands exp) env)))
