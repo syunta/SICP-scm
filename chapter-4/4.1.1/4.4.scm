@@ -1,3 +1,18 @@
+(define (and? exp) (tagged-list? exp 'and))
+(define (and-predicates exp) (cdr exp))
+(define (first-predicate seq) (car seq))
+(define (rest-predicates seq) (cdr seq))
+
+(define (eval-and exps env)
+  (define (go exps last-result)
+    (if (null? exps)
+      last-result
+      (let ((value (eval (first-predicate exps) env)))
+        (if (not (true? value))
+          'false
+          (go (rest-predicate exps) value)))))
+  (go exps 'true))
+
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
         ((variable? exp) (lookup-variable-value exp env))
@@ -12,6 +27,7 @@
         ((begin? exp)
          (eval-sequence (begin-actions exp) env))
         ((cond? exp) (eval (cond->if exp) env))
+        ((and? exp) (eval-and (and-predicates exp) env))
         ((application? exp)
          (apply (eval (operator exp) env)
                 (list-of-values (operands exp) env)))
