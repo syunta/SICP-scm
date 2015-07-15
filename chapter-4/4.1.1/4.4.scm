@@ -19,9 +19,9 @@
   (if (null? exps)
     'false
     (let ((value (eval (first-predicate exps) env)))
-      (if (true? value))
-      value
-      (eval-or (rest-predicate exps) env))))
+      (if (true? value)
+        value
+        (eval-or (rest-predicate exps) env)))))
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
