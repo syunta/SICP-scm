@@ -1,3 +1,5 @@
+(load "../../lib/eval-apply")
+
 (define (and? exp) (tagged-list? exp 'and))
 (define (or? exp) (tagged-list? exp 'or))
 (define (and-predicates exp) (cdr exp))
@@ -14,6 +16,18 @@
           'false
           (go (rest-predicate exps) value)))))
   (go exps 'true))
+
+; exp が _x を使っていた場合、変数の衝突が起きてしまう
+(define (and->if exp)
+  (define (go predicates result)
+    (if (null? predicates)
+      result
+      (list (make-lambda '_x
+                         (list (make-if '_x
+                                        (go (rest-predicates predicates) '_x)
+                                        'false)))
+            (first-predicate predicates))))
+  (go (and-predicates exp) 'true))
 
 (define (eval-or exps env)
   (if (null? exps)
@@ -38,9 +52,32 @@
          (eval-sequence (begin-actions exp) env))
         ((cond? exp) (eval (cond->if exp) env))
         ((and? exp) (eval-and (and-predicates exp) env))
+        ;((and? exp) (eval (and->if exp) env))
         ((or? exp) (eval-or (or-predicates exp) env))
         ((application? exp)
          (apply (eval (operator exp) env)
                 (list-of-values (operands exp) env)))
         (else
           (error "Unknown expression type -- EVAL" exp))))
+
+(define (main args)
+
+  (define and-expression
+    '(and (not (null? x)) (number? (car x)) (< 0 (car x))))
+
+  (print (and->if and-expression))
+  ;=>
+  ;((lambda _x
+  ;   (if _x
+  ;     ((lambda _x
+  ;        (if _x
+  ;          ((lambda _x
+  ;             (if _x
+  ;               _x
+  ;               false))
+  ;           (< 0 (car x)))
+  ;          false))
+  ;      (number? (car x)))
+  ;     false))
+  ; (not (null? x)))
+  )
