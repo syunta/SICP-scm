@@ -37,6 +37,18 @@
         value
         (eval-or (rest-predicate exps) env)))))
 
+; exp が _x を使っていた場合、変数の衝突が起きてしまう
+(define (or->if exp)
+  (define (go predicates)
+    (if (null? predicates)
+      'false
+      (list (make-lambda '_x
+                         (list (make-if '_x
+                                        '_x
+                                        (go (rest-predicates predicates)))))
+            (first-predicate predicates))))
+  (go (or-predicates exp)))
+
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
         ((variable? exp) (lookup-variable-value exp env))
@@ -54,6 +66,7 @@
         ((and? exp) (eval-and (and-predicates exp) env))
         ;((and? exp) (eval (and->if exp) env))
         ((or? exp) (eval-or (or-predicates exp) env))
+        ;((or? exp) (eval (or->if exp) env))
         ((application? exp)
          (apply (eval (operator exp) env)
                 (list-of-values (operands exp) env)))
@@ -64,6 +77,9 @@
 
   (define and-expression
     '(and (not (null? x)) (number? (car x)) (< 0 (car x))))
+
+  (define or-expression
+    '(or (car x) (cadr x) (caddr x)))
 
   (print (and->if and-expression))
   ;=>
@@ -80,4 +96,20 @@
   ;      (number? (car x)))
   ;     false))
   ; (not (null? x)))
+
+  (print (or->if or-expression))
+  ;=>
+  ;((lambda _x
+  ;   (if _x
+  ;     _x
+  ;     ((lambda _x
+  ;        (if _x
+  ;          _x
+  ;          ((lambda _x
+  ;             (if _x
+  ;               _x
+  ;               false))
+  ;           (caddr x))))
+  ;      (cadr x))))
+  ; (car x))
   )
