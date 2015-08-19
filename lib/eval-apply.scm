@@ -349,3 +349,7 @@
                    (procedure-body object)
                    '<procedure-env>))
     (display object)))
+
+; Usage
+;(define the-global-environment (setup-environment))
+;(driver-loop)
