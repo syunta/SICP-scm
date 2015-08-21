@@ -13,9 +13,9 @@
       last-result
       (let ((value (eval (first-predicate exps) env)))
         (if (not (true? value))
-          'false
-          (go (rest-predicate exps) value)))))
-  (go exps 'true))
+          false
+          (go (rest-predicates exps) value)))))
+  (go exps true))
 
 ; exp が _x を使っていた場合、変数の衝突が起きてしまう
 (define (and->if exp)
@@ -25,17 +25,17 @@
       (list (make-lambda '_x
                          (list (make-if '_x
                                         (go (rest-predicates predicates) '_x)
-                                        'false)))
+                                        false)))
             (first-predicate predicates))))
-  (go (and-predicates exp) 'true))
+  (go (and-predicates exp) true))
 
 (define (eval-or exps env)
   (if (null? exps)
-    'false
+    false
     (let ((value (eval (first-predicate exps) env)))
       (if (true? value)
         value
-        (eval-or (rest-predicate exps) env)))))
+        (eval-or (rest-predicates exps) env)))))
 
 ; exp が _x を使っていた場合、変数の衝突が起きてしまう
 (define (or->if exp)
