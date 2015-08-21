@@ -36,6 +36,8 @@
         ((begin? exp) 
          (eval-sequence (begin-actions exp) env))
         ((cond? exp) (eval (cond->if exp) env))
+        ((and? exp) (eval-and (and-predicates exp) env))
+        ((or? exp) (eval-or (or-predicates exp) env))
         ((application? exp)
          (apply (eval (operator exp) env)
                 (list-of-values (operands exp) env)))
@@ -54,6 +56,24 @@
   (if (true? (eval (if-predicate exp) env))
     (eval (if-consequent exp) env)
     (eval (if-alternative exp) env)))
+
+(define (eval-and exps env)
+  (define (go exps last-result)
+    (if (null? exps)
+      last-result
+      (let ((value (eval (first-predicate exps) env)))
+        (if (not (true? value))
+          false
+          (go (rest-predicates exps) value)))))
+  (go exps true))
+
+(define (eval-or exps env)
+  (if (null? exps)
+    false
+    (let ((value (eval (first-predicate exps) env)))
+      (if (true? value)
+        value
+        (eval-or (rest-predicates exps) env)))))
 
 ; Sequences
 (define (eval-sequence exps env)
@@ -128,7 +148,8 @@
 (define (make-lambda parameters body)
   (cons 'lambda (cons parameters body)))
 
-; Conditionals - if
+; Conditionals
+; If
 (define (if? exp) (tagged-list? exp 'if))
 
 (define (if-predicate exp) (cadr exp))
@@ -142,6 +163,16 @@
 
 (define (make-if predicate consequent alternative)
   (list 'if predicate consequent alternative))
+
+; And, Or
+(define (first-predicate seq) (car seq))
+(define (rest-predicates seq) (cdr seq))
+
+(define (and? exp) (tagged-list? exp 'and))
+(define (and-predicates exp) (cdr exp))
+
+(define (or? exp) (tagged-list? exp 'or))
+(define (or-predicates exp) (cdr exp))
 
 ; Begin expressions
 (define (begin? exp) (tagged-list? exp 'begin))
