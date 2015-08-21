@@ -80,6 +80,41 @@
                                              (list 'loop)))
                            true)))
 
+; until
+; expr body …
+
+; while の条件を逆にしたものです。 つまり、 最初の形式ではexprが真値を返すまで body … を 繰り返します。
+
+(define until-expression
+  '(let ((a '(0 1 2 3 4)))
+     ;**example of use**
+     (until (null? a)
+            (print a)
+            (print (pop! a)))))
+
+(define until-derived
+  '(let ((a '(0 1 2 3 4)))
+     ;**derived expression**
+     (let loop ()
+       (if (null? a)
+         #t
+         (begin
+           (print a)
+           (print (pop! a))
+           (loop))))))
+
+(define (until-expr exp) (cadr exp))
+(define (until-body exp) (cddr exp))
+
+(define (until->named-let exp)
+  (make-named-let 'loop
+                  '()
+                  (make-if (until-expr exp)
+                           true
+                           (make-begin (append (until-body exp)
+                                               (list (list 'loop)))))))
+
 (define (main args)
   (print (equal? (do->named-let do-expression) do-derived))
-  (print (equal? (while->named-let (caddr while-expression)) (caddr while-derived))))
+  (print (equal? (while->named-let (caddr while-expression)) (caddr while-derived)))
+  (print (equal? (until->named-let (caddr until-expression)) (caddr until-derived))))
