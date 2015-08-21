@@ -401,6 +401,10 @@
         (list 'cdr cdr)
         (list 'cons cons)
         (list 'null? null?)
+        (list '+ +)
+        (list '- -)
+        (list '* *)
+        (list '/ /)
         ; ⟨基本手続きが続く⟩
         ))
 
