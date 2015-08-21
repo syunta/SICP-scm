@@ -47,5 +47,39 @@
                            (make-begin (list (make-begin (do-body exp))
                                              (cons 'loop (do-steps exp)))))))
 
+; while
+; expr body …
+
+; まずexprが評価され、もしそれが真値を返したら body … が評価されます。そしてexprが真値を返す 限り繰り返されます。
+
+(define while-expression
+  '(let ((a '(0 1 2 3 4)))
+     ;**example of use**
+     (while (pair? a)
+            (print (pop! a)))))
+
+(define while-derived
+  '(let ((a '(0 1 2 3 4)))
+     ;**derived expression**
+     (let loop ()
+       (if (pair? a)
+         (begin
+           (begin
+             (print (pop! a)))
+           (loop))
+         #t))))
+
+(define (while-expr exp) (cadr exp))
+(define (while-body exp) (cddr exp))
+
+(define (while->named-let exp)
+  (make-named-let 'loop
+                  '()
+                  (make-if (while-expr exp)
+                           (make-begin (list (make-begin (while-body exp))
+                                             (list 'loop)))
+                           true)))
+
 (define (main args)
-  (print (equal? (do->named-let do-expression) do-derived)))
+  (print (equal? (do->named-let do-expression) do-derived))
+  (print (equal? (while->named-let (caddr while-expression)) (caddr while-derived))))
