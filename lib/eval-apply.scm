@@ -118,6 +118,9 @@
     false))
 
 ; Assignments
+(define (make-assignment name new-value)
+  (list 'set! name new-value))
+
 (define (assignment? exp)
   (tagged-list? exp 'set!))
 
