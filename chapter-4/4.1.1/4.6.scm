@@ -21,6 +21,8 @@
         (else
           (error "Unknown expression type -- EVAL" exp))))
 
+(define (let? exp) (tagged-list? exp 'let))
+
 (define (let-bindings exp) (cadr exp))
 
 (define (let-body exp) (cddr exp))
