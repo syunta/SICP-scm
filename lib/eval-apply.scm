@@ -251,10 +251,13 @@
 (define (let-body exp) (cddr exp))
 
 (define (let->combination exp)
-  (let ((bindings (let-bindings exp)))
-    (cons (make-lambda (let-variables bindings)
-                       (let-body exp))
-          (let-expressions bindings))))
+  (cond ((named-let? exp)
+         (named-let->combination exp))
+        (else
+          (let ((bindings (let-bindings exp)))
+            (cons (make-lambda (let-variables bindings)
+                               (let-body exp))
+                  (let-expressions bindings))))))
 
 ; Let*
 (define (let*? exp) (tagged-list? exp 'let*))
@@ -272,6 +275,25 @@
           (make-let binding (go rest))
           (make-let binding (list (go rest)))))))
   (go (let-bindings exp)))
+
+; Named let
+(define (make-named-let var bindings body)
+  (list 'let var bindings body)) ; 変数varの衝突が起きる
+
+(define (named-let? exp) (symbol? (cadr exp)))
+
+(define (named-let-name exp) (cadr exp))
+(define (named-let-bindings exp) (caddr exp))
+(define (named-let-body exp) (cdddr exp))
+
+(define (named-let->combination exp)
+  (let ((name (named-let-name exp))
+        (bindings (named-let-bindings exp)))
+    (make-let (list (list name 'false))
+              (list (make-assignment name
+                                     (make-lambda (let-variables bindings)
+                                                  (named-let-body exp)))
+                    (cons name (let-expressions bindings))))))
 
 ; Testing of predicates
 (define (true? x)
