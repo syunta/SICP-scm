@@ -34,6 +34,7 @@
                          (lambda-body exp)
                          env))
         ((let? exp) (eval (let->combination exp) env))
+        ((let*? exp) (eval (let*->nested-lets exp) env))
         ((begin? exp) 
          (eval-sequence (begin-actions exp) env))
         ((cond? exp) (eval (cond->if exp) env))
@@ -237,6 +238,8 @@
                  (expand-clauses rest))))))
 
 ; Let
+(define (make-let bindings body)
+  (cons 'let (cons bindings body))) ;bodyは式のリストを取る
 
 (define (let? exp) (tagged-list? exp 'let))
 (define (let-bindings exp) (cadr exp))
@@ -249,6 +252,23 @@
     (cons (make-lambda (let-variables bindings)
                        (let-body exp))
           (let-expressions bindings))))
+
+; Let*
+(define (let*? exp) (tagged-list? exp 'let*))
+
+(define (first-binding bindings) (car bindings))
+(define (rest-bindings bindings) (cdr bindings))
+
+(define (let*->nested-lets exp)
+  (define (go bindings)
+    (if (null? bindings)
+      (let-body exp)
+      (let ((rest (rest-bindings bindings))
+            (binding (list (first-binding bindings))))
+        (if (null? rest)
+          (make-let binding (go rest))
+          (make-let binding (list (go rest)))))))
+  (go (let-bindings exp)))
 
 ; Testing of predicates
 (define (true? x)
