@@ -1,0 +1,47 @@
+(load "../../lib/eval-apply")
+
+(define (scan-env env found not-found)
+  (if (eq? env the-empty-environment)
+    (not-found)
+    (let ((frame (first-frame env)))
+      (found frame))))
+
+(define (scan-frame vars vals var found not-found)
+  (cond ((null? vars)
+         (not-found))
+        ((eq? var (car vars))
+         (found vals))
+        (else (scan-frame (cdr vars) (cdr vals) var found not-found))))
+
+(define (lookup-variable-value var env)
+  (define (not-found)
+    (error "Unbound variable" var))
+  (define (found frame)
+    (scan-frame (frame-variables frame)
+                (frame-values frame)
+                var
+                (lambda (vals) (car vals))
+                (lambda () (scan-env (enclosing-environment env) found not-found))))
+  (scan-env env found not-found))
+
+(define (set-variable-value! var val env)
+  (define (not-found)
+    (error "Unbound variable -- SET!" var))
+  (define (found frame)
+    (scan-frame (frame-variables frame)
+                (frame-values frame)
+                var
+                (lambda (vals) (set-car! vals val))
+                (lambda () (scan-env (enclosing-environment env) found not-found))))
+  (scan-env env found not-found))
+
+(define (define-variable! var val env)
+  (define (not-found)
+    (error "Unexpected error -- DEFINE" var))
+  (define (found frame)
+    (scan-frame (frame-variables frame)
+                (frame-values frame)
+                var
+                (lambda (vals) (set-car! vals val))
+                (lambda () (add-binding-to-frame! var val frame))))
+  (scan-env env found not-found))
