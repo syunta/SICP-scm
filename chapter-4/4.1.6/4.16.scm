@@ -55,6 +55,18 @@
                 (append (map (lambda (var val) (make-assignment var val))
                              vars vals)
                         (lambda-expressions exps))))))
+; c
+
+; procedure-bodyに組み込むデメリット
+; procedure-bodyは実行頻度が高く、何度も変換を行うことは効率が悪い。
+; make-procedureで変換しておくと、以後、procedure-body で変換後の構文がすぐ取れる。
+
+; make-procedureに組み込むデメリット
+; make-procedureで変換してしまうと、変換前のコードを使いたい場合に困る。
+; 変換前のコードを別に保持する必要が出てくる。
+; procedure-bodyで変換しておくと、変換前のコードを保持する必要はない。
+
+; procedure-bodyで変換して変換しておくといい。
 
 (define (main args)
   ;(driver-loop)
