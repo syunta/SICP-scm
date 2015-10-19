@@ -1,0 +1,38 @@
+(add-load-path "../../lib" :relative)
+(load "stream-lazy-list")
+
+(define (user-print object)
+  (cond ((compound-procedure? object)
+         (display (lazy-list->list object)))
+;         (display (list 'compound-procedure
+;                        (procedure-parameters object)
+;                        (procedure-body object)
+;                        '<procedure-env>)))
+;        ((lazy-list? object)
+        (else (display object))))
+
+(define (procedure->lambda procedure)
+  (make-lambda (procedure-parameters procedure)
+               (procedure-body procedure)))
+
+(define (lazy-list->list obj)
+  (if (not (compound-procedure? obj))
+    obj
+    (cons (lazy-list->list (actual-value (list 'car (procedure->lambda obj))
+                                         (procedure-environment obj)))
+          (lazy-list->list (actual-value (list 'cdr (procedure->lambda obj))
+                                         (procedure-environment obj))))))
+
+(define (main args)
+  (for-each (lambda (exp)
+              (actual-value exp the-global-environment))
+            '((define x (cons 1 (cons 2 (cons 3 '()))))
+              (define y (cons 1 (cons 2 3)))
+              (define z (cons (cons 1 (cons 2 '())) (cons 3 '())))))
+  (for-each (lambda (exp)
+              (user-print (actual-value exp the-global-environment)))
+            '( x ;=> (1 2 3)
+               y ;=> (1 2 .3)
+               z ;=> ((1 2) 3)
+               ))
+  )
