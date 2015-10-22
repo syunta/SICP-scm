@@ -43,6 +43,7 @@
         ((if? exp) (analyze-if exp))
         ((lambda? exp) (analyze-lambda exp))
         ((begin? exp) (analyze-sequence (begin-actions exp)))
+        ((let? exp) (analyze (let->combination exp)))
         ((cond? exp) (analyze (cond->if exp)))
         ((application? exp) (analyze-application exp))
         (else
@@ -202,6 +203,24 @@
         (else (make-begin seq))))
 
 (define (make-begin seq) (cons 'begin seq))
+
+; Let
+(define (let? exp) (tagged-list? exp 'let))
+
+(define (let-bindings exp) (cadr exp))
+(define (let-body exp) (cddr exp))
+
+(define (let-variables bindings)
+  (map car bindings))
+
+(define (let-expressions bindings)
+  (map cadr bindings))
+
+(define (let->combination exp)
+  (let ((bindings (let-bindings exp)))
+    (cons (make-lambda (let-variables bindings)
+                       (let-body exp))
+          (let-expressions bindings))))
 
 ; Procedure application
 (define (application? exp) (pair? exp))
