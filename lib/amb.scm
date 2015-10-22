@@ -1,4 +1,4 @@
-(load "./separated-analysis-excution-eval-apply.scm")
+(load "separated-analysis-excution-eval-apply")
 
 ; Analyze
 (define (analyze exp)
