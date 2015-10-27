@@ -377,6 +377,7 @@
         (list '/ /)
         (list '= =)
         (list 'eq? eq?)
+        (list 'not not)
         ; ⟨基本手続きが続く⟩
         ))
 
