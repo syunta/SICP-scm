@@ -206,3 +206,12 @@
             (define (an-element-of items)
               (require (not (null? items)))
               (amb (car items) (an-element-of (cdr items))))))
+
+(define (print-ambeval exp)
+  (ambeval exp
+           the-global-environment
+           (lambda (val next-alternative)
+             (print val)
+             (next-alternative))
+           (lambda ()
+             (print "End of serch"))))
