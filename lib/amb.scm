@@ -194,6 +194,15 @@
       (display ";;; There is no current problem")
       (driver-loop))))
 
-(for-each (lambda (exp) (analyze exp))
+(define (simple-ambeval exp)
+  (ambeval exp
+           the-global-environment
+           (lambda (val next-alternative))
+           (lambda ())))
+
+(for-each simple-ambeval
           '((define (require p)
-              (if (not p) (amb)))))
+              (if (not p) (amb)))
+            (define (an-element-of items)
+              (require (not (null? items)))
+              (amb (car items) (an-element-of (cdr items))))))
