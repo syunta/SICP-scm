@@ -18,7 +18,7 @@
                     (list i j k)))))))
 
 (define (main args)
-  (print-ambeval '(a-pythagorean-triple-between 1 15))
+  (print-ambeval '(a-pythagorean-triple-between 1 15) 10)
   ;=>
   ; (3 4 5)
   ; (5 12 13)

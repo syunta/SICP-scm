@@ -207,11 +207,16 @@
               (require (not (null? items)))
               (amb (car items) (an-element-of (cdr items))))))
 
-(define (print-ambeval exp)
-  (ambeval exp
-           the-global-environment
-           (lambda (val next-alternative)
-             (print val)
-             (next-alternative))
-           (lambda ()
-             (print "End of serch"))))
+(define (print-ambeval exp n)
+  (let ((count n))
+    (ambeval exp
+             the-global-environment
+             (lambda (val next-alternative)
+               (cond ((< 0 count)
+                      (set! count (- count 1))
+                      (print val)
+                      (next-alternative))
+                     (else
+                       (print "To be continued ..."))))
+             (lambda ()
+               (print "End of serch")))))
