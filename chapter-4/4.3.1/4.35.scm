@@ -10,6 +10,10 @@
             (define (an-integer-between low high)
               (an-element-of (enumerate-interval low high)))
 
+            (define (an-integer-between-2 low high)
+              (require (<= low high))
+              (amb low (an-integer-between (+ low 1) high)))
+
             (define (a-pythagorean-triple-between low high)
               (let ((i (an-integer-between low high)))
                 (let ((j (an-integer-between i high)))
