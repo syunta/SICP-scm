@@ -381,8 +381,10 @@
         (list '> >)
         (list '>= >=)
         (list '<= <=)
+        (list 'abs abs)
         (list 'eq? eq?)
         (list 'not not)
+        (list 'member member)
         ; ⟨基本手続きが続く⟩
         ))
 
