@@ -20,13 +20,16 @@
 ; のように最初に i=1,j=1 のパターンを無限に探索し続けることとなり、適切ではない。
 ; 探索の上限値を設ければよい。
 
+; k = 1 2 3 ... n
+; i < k
+; i <= j < k
 (for-each simple-ambeval
           '((define (an-integer-starting-from n)
               (amb n (an-integer-starting-from (+ n 1))))
             (define (a-pythagorean-triples)
               (let ((k (an-integer-starting-from 1)))
-                (let ((i (an-integer-between 1 k)))
-                  (let ((j (an-integer-between i k)))
+                (let ((i (an-integer-between 1 (- k 1))))
+                  (let ((j (an-integer-between i (- k 1))))
                     (require (= (+ (* i i) (* j j)) (* k k)))
                     (list i j k)))))))
 
