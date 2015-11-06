@@ -34,6 +34,16 @@
                   ws))
            (quadruples xs ys zs ws)))
 
+(define (safe? x)
+  (and (distinct? x)
+       (not (= (baker x) 5))
+       (not (= (cooper x) 1))
+       (not (= (fletcher x) 5))
+       (not (= (fletcher x) 1))
+       (> (miller x) (cooper x))
+       (not (= (abs (- (smith x) (fletcher x))) 1))
+       (not (= (abs (- (fletcher x) (cooper x))) 1))))
+
 (define (baker seq) (car seq))
 (define (cooper seq) (cadr seq))
 (define (fletcher seq) (caddr seq))
@@ -41,34 +51,19 @@
 (define (smith seq) (car (cddddr seq)))
 
 (define (multiple-dwelling)
-  (map
-    (lambda (x)
-      (list (list 'baker (baker x))
-            (list 'cooper (cooper x))
-            (list 'fletcher (fletcher x))
-            (list 'miller (miller x))
-            (list 'smith (smith x))))
-    (filter
-      (lambda (x) (not (= (abs (- (fletcher x) (cooper x))) 1)))
-      (filter
-        (lambda (x) (not (= (abs (- (smith x) (fletcher x))) 1)))
-        (filter
-          (lambda (x) (> (miller x) (cooper x)))
-          (filter
-            (lambda (x) (not (= (fletcher x) 1)))
-            (filter
-              (lambda (x) (not (= (fletcher x) 5)))
-              (filter
-                (lambda (x) (not (= (cooper x) 1)))
-                (filter
-                  (lambda (x) (not (= (baker x) 5)))
-                  (filter distinct?
-                          (let ((baker '(1 2 3 4 5))
-                                (cooper '(1 2 3 4 5))
-                                (fletcher '(1 2 3 4 5))
-                                (miller '(1 2 3 4 5))
-                                (smith '(1 2 3 4 5)))
-                            (quintuples baker cooper fletcher miller smith))))))))))))
+  (map (lambda (x)
+         (list (list 'baker (baker x))
+               (list 'cooper (cooper x))
+               (list 'fletcher (fletcher x))
+               (list 'miller (miller x))
+               (list 'smith (smith x))))
+       (filter safe?
+               (let ((baker '(1 2 3 4 5))
+                     (cooper '(1 2 3 4 5))
+                     (fletcher '(1 2 3 4 5))
+                     (miller '(1 2 3 4 5))
+                     (smith '(1 2 3 4 5)))
+                 (quintuples baker cooper fletcher miller smith)))))
 
 ; 前段の制限で既に除外されたのではない可能性だけの生成を基にした解き方
 ; より効率的になったはず
