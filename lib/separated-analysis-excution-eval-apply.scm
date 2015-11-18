@@ -389,6 +389,7 @@
         (list 'eq? eq?)
         (list 'not not)
         (list 'member member)
+        (list 'iota iota)
         ; ⟨基本手続きが続く⟩
         ))
 
