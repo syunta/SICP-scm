@@ -6,7 +6,7 @@
 
             (define verbs '(verb studies lectures eats sleeps))
 
-            (define articles '(article the a))
+            (define articles '(article the The a))
 
             (define prepositions '(prep for to in by with))
 
