@@ -19,7 +19,7 @@
               (define (go n cols)
                 (if (= n 0)
                   cols
-                  (let ((col (amb (an-element-of (iota board-size 1 1)))))
+                  (let ((col (an-element-of (iota board-size 1 1))))
                     (let ((new-cols (cons col cols)))
                       (require (safe? new-cols))
                       (go (- n 1) new-cols)))))
