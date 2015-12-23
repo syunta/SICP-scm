@@ -9,6 +9,17 @@
             (define articles '(article the The a))
             (define prepositions '(prep for to in by with))
             (define adjectives '(adjective angry))
+            (define adverbs '(adverb very well))
+
+            (define (parse-adverb-phrase)
+              (define (maybe-extend adverb-phrase)
+                (amb (list 'adverb-phrase
+                           adverb-phrase
+                           (parse-adjective-phrase))
+                     (list 'adverb-phrase
+                           adverb-phrase
+                           (parse-adverb-phrase))))
+              (maybe-extend (parse-word adverbs)))
 
             (define (parse-adjective-phrase)
               (list 'adjective-phrase
@@ -19,7 +30,8 @@
               (amb (parse-simple-noun-phrase)
                    (list 'article-phrase
                          (parse-word articles)
-                         (parse-adjective-phrase))))
+                         (amb (parse-adjective-phrase)
+                              (parse-adverb-phrase)))))
 
             (define (parse-simple-noun-phrase)
               (list 'simple-noun-phrase
@@ -71,4 +83,8 @@
     '(parse '(the cat eats)) 5)
   (print-ambeval
     '(parse '(the angry cat eats)) 5)
+  (print-ambeval
+    '(parse '(the very angry cat eats)) 5)
+  (print-ambeval
+    '(parse '(the very very angry cat eats)) 5)
   )
