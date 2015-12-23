@@ -95,22 +95,16 @@
             ))
 
 (define (main args)
-  (print-ambeval
-    '(parse '(the cat eats)) 5)
-  (print-ambeval
-    '(parse '(the angry cat eats)) 5)
-  (print-ambeval
-    '(parse '(the very angry cat eats)) 5)
-  (print-ambeval
-    '(parse '(the very very angry cat eats)) 5)
-  (print-ambeval
-    '(parse '(the cat eats very well)) 5)
-  (print-ambeval
-    '(parse '(the cat eats fast in the class)) 5)
-  (print-ambeval
-    '(parse '(the cat eats with the student in the class very fast)) 5)
-  (print-ambeval
-    '(parse '(the professor gets angry)) 5)
-  (print-ambeval
-    '(parse '(the cat eats and the professor gets angry but the student gets happy)) 5)
+  (for-each (lambda (sentence)
+              (print-ambeval `(parse ',sentence) 5))
+            '((the cat eats)
+              (the angry cat eats)
+              (the very angry cat eats)
+              (the very very angry cat eats)
+              (the cat eats very well)
+              (the cat eats fast in the class)
+              (the cat eats with the student in the class very fast)
+              (the professor gets angry)
+              (the cat eats and the professor gets angry but the student gets happy)
+              ))
   )
