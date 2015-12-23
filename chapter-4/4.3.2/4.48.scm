@@ -5,7 +5,7 @@
           '(
             (define *unparsed* '())
             (define nouns '(noun student professor cat class))
-            (define verbs '(verb studies lectures eats sleeps))
+            (define verbs '(verb studies lectures eats sleeps gets))
             (define articles '(article the The a))
             (define prepositions '(prep for to in by with))
             (define adjectives '(adjective angry))
@@ -19,9 +19,10 @@
                               (parse-adverb-phrase)))))
 
             (define (parse-adjective-phrase)
-              (list 'adjective-phrase
-                    (parse-word adjectives)
-                    (parse-word nouns)))
+              (amb (parse-word adjectives)
+                   (list 'adjective-phrase
+                         (parse-word adjectives)
+                         (parse-word nouns))))
 
             (define (parse-article-phrase)
               (amb (parse-simple-noun-phrase)
@@ -48,7 +49,8 @@
                 (amb verb-phrase
                      (list 'verb-phrase
                            verb-phrase
-                           (parse-adverb-phrase))
+                           (amb (parse-adjective-phrase)
+                                (parse-adverb-phrase)))
                      (list 'verb-phrase
                            verb-phrase
                            (parse-adverb-phrase)
@@ -97,4 +99,6 @@
     '(parse '(the cat eats fast in the class)) 5)
   (print-ambeval
     '(parse '(the cat eats with the student in the class very fast)) 5)
+  (print-ambeval
+    '(parse '(the professor gets angry)) 5)
   )
