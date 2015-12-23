@@ -9,17 +9,14 @@
             (define articles '(article the The a))
             (define prepositions '(prep for to in by with))
             (define adjectives '(adjective angry))
-            (define adverbs '(adverb very well))
+            (define adverbs '(adverb fast very well))
 
             (define (parse-adverb-phrase)
-              (define (maybe-extend adverb-phrase)
-                (amb (list 'adverb-phrase
-                           adverb-phrase
-                           (parse-adjective-phrase))
-                     (list 'adverb-phrase
-                           adverb-phrase
-                           (parse-adverb-phrase))))
-              (maybe-extend (parse-word adverbs)))
+              (amb (parse-word adverbs)
+                   (list 'adverb-phrase
+                         (parse-word adverbs)
+                         (amb (parse-adjective-phrase)
+                              (parse-adverb-phrase)))))
 
             (define (parse-adjective-phrase)
               (list 'adjective-phrase
@@ -49,6 +46,13 @@
             (define (parse-verb-phrase)
               (define (maybe-extend verb-phrase)
                 (amb verb-phrase
+                     (list 'verb-phrase
+                           verb-phrase
+                           (parse-adverb-phrase))
+                     (list 'verb-phrase
+                           verb-phrase
+                           (parse-adverb-phrase)
+                           (parse-prepositional-phrase))
                      (maybe-extend (list 'verb-phrase
                                          verb-phrase
                                          (parse-prepositional-phrase)))))
@@ -87,4 +91,10 @@
     '(parse '(the very angry cat eats)) 5)
   (print-ambeval
     '(parse '(the very very angry cat eats)) 5)
+  (print-ambeval
+    '(parse '(the cat eats very well)) 5)
+  (print-ambeval
+    '(parse '(the cat eats fast in the class)) 5)
+  (print-ambeval
+    '(parse '(the cat eats with the student in the class very fast)) 5)
   )
