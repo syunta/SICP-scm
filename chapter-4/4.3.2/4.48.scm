@@ -10,12 +10,16 @@
             (define prepositions '(prep for to in by with))
             (define adjectives '(adjective angry))
 
+            (define (parse-adjective-phrase)
+              (list 'adjective-phrase
+                    (parse-word adjectives)
+                    (parse-word nouns)))
+
             (define (parse-article-phrase)
               (amb (parse-simple-noun-phrase)
                    (list 'article-phrase
                          (parse-word articles)
-                         (parse-word adjectives)
-                         (parse-word nouns))))
+                         (parse-adjective-phrase))))
 
             (define (parse-simple-noun-phrase)
               (list 'simple-noun-phrase
