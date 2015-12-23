@@ -8,8 +8,9 @@
             (define verbs '(verb studies lectures eats sleeps gets))
             (define articles '(article the The a))
             (define prepositions '(prep for to in by with))
-            (define adjectives '(adjective angry))
+            (define adjectives '(adjective angry happy))
             (define adverbs '(adverb fast very well))
+            (define conjunctions '(conjunction and but))
 
             (define (parse-adverb-phrase)
               (amb (parse-word adverbs)
@@ -70,6 +71,15 @@
                     (parse-noun-phrase)
                     (parse-verb-phrase)))
 
+            (define (parse-sentences)
+              (define (maybe-extend sentence)
+                (amb sentence
+                     (maybe-extend (list 'conjunction-sentence
+                                         (parse-word conjunctions)
+                                         (list sentence
+                                               (parse-sentences))))))
+              (maybe-extend (parse-sentence)))
+
             (define (parse-word word-list)
               (require (not (null? *unparsed*)))
               (require (memq (car *unparsed*) (cdr word-list)))
@@ -79,7 +89,7 @@
 
             (define (parse input)
               (set! *unparsed* input)
-              (let ((sent (parse-sentence)))
+              (let ((sent (parse-sentences)))
                 (require (null? *unparsed*))
                 sent))
             ))
@@ -101,4 +111,6 @@
     '(parse '(the cat eats with the student in the class very fast)) 5)
   (print-ambeval
     '(parse '(the professor gets angry)) 5)
+  (print-ambeval
+    '(parse '(the cat eats and the professor gets angry but the student gets happy)) 5)
   )
