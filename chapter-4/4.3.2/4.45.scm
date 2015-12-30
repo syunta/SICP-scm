@@ -9,6 +9,7 @@
                   in the class
                   with the cat)) 5)
 
+  ; 教授が猫と一緒に教室内で生徒にレクチャーする
   '(sentence
      (simple-noun-phrase
        (article The)
@@ -33,6 +34,7 @@
            (article the)
            (noun cat)))))
 
+  ; 教授が猫のいる教室内で生徒にレクチャーする
   '(sentence
      (simple-noun-phrase
        (article The)
@@ -57,6 +59,7 @@
                (article the)
                (noun cat)))))))
 
+  ; 教授が猫と一緒に教室内の生徒にレクチャーする
   '(sentence
      (simple-noun-phrase
        (article The)
@@ -81,6 +84,7 @@
            (article the)
            (noun cat)))))
 
+  ; 教授が教室内の猫と一緒の生徒にレクチャーする
   '(sentence
      (simple-noun-phrase
        (article The)
@@ -105,6 +109,7 @@
                (article the)
                (noun cat)))))))
 
+  ; 教授が猫のいる教室内の生徒にレクチャーする
   '(sentence
      (simple-noun-phrase
        (article The)
