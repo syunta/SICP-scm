@@ -50,6 +50,14 @@
                                           verb-phrase
                                           (parse-prepositional-phrase)))))
               (maybe-extend (parse-word verbs)))
+
+            (define (ran-element-of items)
+              (require (not (null? items)))
+              (ramb (car items) (ran-element-of (cdr items))))
+
+            (define (parse-word word-list)
+              (let ((found-word (ran-element-of (cdr word-list))))
+                (list (car word-list) found-word)))
             ))
 
 (define (main args)
