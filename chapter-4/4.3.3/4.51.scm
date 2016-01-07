@@ -48,6 +48,14 @@
        (require (not (eq? x y)))
        (list x y count))
     10)
+  ;=>
+  ; (a b 2)
+  ; (a c 3)
+  ; (b a 4)
+  ; (b c 6)
+  ; (c a 7)
+  ; (c b 8)
+  ; End of serch
   (print-ambeval
     '(let ((x (an-element-of '(a b c)))
            (y (an-element-of '(a b c))))
