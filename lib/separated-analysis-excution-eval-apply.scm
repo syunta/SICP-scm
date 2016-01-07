@@ -380,6 +380,7 @@
         (list '- -)
         (list '* *)
         (list '/ /)
+        (list 'remainder remainder)
         (list '= =)
         (list '< <)
         (list '> >)
