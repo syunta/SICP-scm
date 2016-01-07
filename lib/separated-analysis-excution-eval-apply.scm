@@ -385,6 +385,7 @@
         (list '> >)
         (list '>= >=)
         (list '<= <=)
+        (list 'even? even?)
         (list 'abs abs)
         (list 'eq? eq?)
         (list 'not not)
