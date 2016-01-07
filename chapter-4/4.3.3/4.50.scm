@@ -62,4 +62,10 @@
 
 (define (main args)
   (print-ambeval '(ramb 1 2 3 4 5 6 7 8 9 10) 10)
-  (print-ambeval '(parse '(the cat eats)) 3))
+
+  ; try-again で生成を続けると、バックトラックしてしまい、途中まで同じ文章が生成される。
+  ; 何回もparseを呼び出すことで、ランダムな文章が生成される。
+  (print-ambeval '(parse '(the cat eats)) 1)
+  (print-ambeval '(parse '(the cat eats)) 1)
+  (print-ambeval '(parse '(the cat eats)) 1)
+  (print-ambeval '(parse '(the cat eats)) 1))
