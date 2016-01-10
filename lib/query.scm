@@ -613,7 +613,6 @@
 
 (define (print-qeval query)
   (let ((q (query-syntax-process query)))
-    (newline)
     (display-stream
       (stream-map
         (lambda (frame)
@@ -621,6 +620,7 @@
                        frame
                        (lambda (v f)
                          (contract-question-mark v))))
-        (qeval q (singleton-stream '()))))))
+        (qeval q (singleton-stream '()))))
+    (newline)))
 
 (initialize-data-base microshaft-data-base)
