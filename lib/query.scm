@@ -19,6 +19,9 @@
 ;;;SECTION 4.4.4.1
 ;;;The Driver Loop and Instantiation
 
+(define (extend variable value frame)
+  (cons (make-binding variable value) frame))
+
 (define input-prompt ";;; Query input:")
 (define output-prompt ";;; Query results:")
 
@@ -456,9 +459,6 @@
 (define (binding-in-frame variable frame)
   (assoc variable frame))
 
-(define (extend variable value frame)
-  (cons (make-binding variable value) frame))
-
 ;;;;Stream support from Chapter 3
 
 (define (stream-append s1 s2)
@@ -498,7 +498,7 @@
             ((eq? m 'insert-proc!) insert!)
             (else (error "Unknown operation -- TABLE" m))))
     dispatch))
-
+
 ;;;; From instructor's manual
 
 (define get '())
