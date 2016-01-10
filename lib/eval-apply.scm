@@ -406,6 +406,10 @@
         (list '* *)
         (list '/ /)
         (list '= =)
+        (list '> >)
+        (list '< <)
+        (list '>= >=)
+        (list '<= <=)
         (list 'eq? eq?)
         ; ⟨基本手続きが続く⟩
         ))
