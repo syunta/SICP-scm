@@ -459,57 +459,13 @@
 (define (extend variable value frame)
   (cons (make-binding variable value) frame))
 
-
-;;;;From Section 4.1
-
-(define (tagged-list? exp tag)
-  (if (pair? exp)
-    (eq? (car exp) tag)
-    false))
-
-(define (prompt-for-input string)
-  (newline) (newline) (display string) (newline))
-
-
 ;;;;Stream support from Chapter 3
-
-(define (stream-map proc s)
-  (if (stream-null? s)
-    the-empty-stream
-    (cons-stream (proc (stream-car s))
-                 (stream-map proc (stream-cdr s)))))
-
-(define (stream-for-each proc s)
-  (if (stream-null? s)
-    'done
-    (begin (proc (stream-car s))
-           (stream-for-each proc (stream-cdr s)))))
-
-(define (display-stream s)
-  (stream-for-each display-line s))
-(define (display-line x)
-  (newline)
-  (display x))
-
-(define (stream-filter pred stream)
-  (cond ((stream-null? stream) the-empty-stream)
-        ((pred (stream-car stream))
-         (cons-stream (stream-car stream)
-                      (stream-filter pred
-                                     (stream-cdr stream))))
-        (else (stream-filter pred (stream-cdr stream)))))
 
 (define (stream-append s1 s2)
   (if (stream-null? s1)
     s2
     (cons-stream (stream-car s1)
                  (stream-append (stream-cdr s1) s2))))
-
-(define (interleave s1 s2)
-  (if (stream-null? s1)
-    s2
-    (cons-stream (stream-car s1)
-                 (interleave s2 (stream-cdr s1)))))
 
 ;;;;Table support from Chapter 3, Section 3.3.3 (local tables)
 
