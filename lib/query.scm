@@ -625,4 +625,9 @@
         (qeval q (singleton-stream '()))))
     (newline)))
 
+; query => (assert! ...)
+(define (qeval-add query)
+  (let ((q (query-syntax-process query)))
+    (add-rule-or-assertion! (add-assertion-body q))))
+
 (initialize-data-base microshaft-data-base)
