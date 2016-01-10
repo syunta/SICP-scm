@@ -129,6 +129,8 @@
 
 ;;(put 'lisp-value 'qeval lisp-value)
 
+(define user-initial-environment the-global-environment)
+
 (define (execute exp)
   (apply (eval (predicate exp) user-initial-environment)
          (args exp)))
