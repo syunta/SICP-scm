@@ -1,3 +1,6 @@
+(load "stream")
+(load "eval-apply")
+
 ;;;;QUERY SYSTEM FROM SECTION 4.4.4 OF
 ;;;; STRUCTURE AND INTERPRETATION OF COMPUTER PROGRAMS
 
