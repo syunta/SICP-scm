@@ -150,3 +150,6 @@
                    (add-streams (scale-stream integrand dt)
                                 int))))
   int)
+
+(define (list->stream lis)
+  (apply stream lis))
