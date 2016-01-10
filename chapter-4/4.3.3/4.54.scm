@@ -29,8 +29,8 @@
     (lambda (env succeed fail)
       (pproc env
              (lambda (pred-value fail2)
-               (if ⟨??⟩
-                 ⟨??⟩
+               (if (not (true? pred-value))
+                 (fail)
                  (succeed 'ok fail2)))
              fail))))
 
@@ -42,4 +42,10 @@
                 t))))
 
 (define (main args)
-  (print-ambeval '(an-element-of '(a b c)) 5))
+  (print-ambeval '(test) 10)
+  ;=>
+  ; 4
+  ; 6
+  ; 8
+  ; End of search
+  )
