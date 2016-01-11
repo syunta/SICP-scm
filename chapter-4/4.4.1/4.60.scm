@@ -8,8 +8,8 @@
 ; 結果の (lives-near ?person-1 ?person-2) がアルファベット順に並んでいなければならないという条件を加える、などの方法が考えられる。
 
 (define (name<? n1 n2)
-  (string<? (symbol->string (car n1))
-            (symbol->string (car n2))))
+  (string<? (string-join (map symbol->string n1) " ")
+            (string-join (map symbol->string n2) " ")))
 
 (set! primitive-procedures (append primitive-procedures (list (list 'name<? name<?))))
 (define user-initial-environment (setup-environment))
@@ -18,6 +18,7 @@
   '(assert! (rule (lives-near-2 ?person-1 ?person-2)
                   (and (address ?person-1 (?town . ?rest-1))
                        (address ?person-2 (?town . ?rest-2))
+                       (not (same ?person-1 ?person-2))
                        (lisp-value name<? ?person-1 ?person-2)))))
 
 (define test '(lives-near-2 ?person-1 ?person-2))
