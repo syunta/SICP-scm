@@ -30,16 +30,26 @@
       (pproc env
              (lambda (pred-value fail2)
                (if (not (true? pred-value))
-                 (fail)
+                 (fail2)
                  (succeed 'ok fail2)))
              fail))))
 
 (for-each simple-ambeval
-          '((define (test)
+          '(
+            (define (test)
               (let ((t (amb 1 2 3 4 5 6 7 8)))
                 (prequire (even? t))
                 (prequire (< 3 t))
-                t))))
+                t))
+
+            (define count 0)
+            (define (test2)
+              (let ((t (amb 1 2 3 4 5)))
+                (prequire
+                  (begin
+                    (set! count (+ count 1))
+                    false))))
+            ))
 
 (define (main args)
   (print-ambeval '(test) 10)
@@ -48,4 +58,7 @@
   ; 6
   ; 8
   ; End of search
+  (simple-ambeval '(test2))
+  (print-ambeval 'count 1)
+  ; 0 副作用がやり戻されて0になる
   )
