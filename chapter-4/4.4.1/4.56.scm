@@ -12,8 +12,8 @@
 
 ; c
 (define c '(and (job ?all ?job)
-                (and (not (job ?all (computer . ?type)))
-                     (supervisor ?all ?who))))
+                (not (job ?all (computer . ?type)))
+                (supervisor ?all ?who)))
 
 (define (main args)
   (print-qeval a)
