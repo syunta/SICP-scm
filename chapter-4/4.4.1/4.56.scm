@@ -11,9 +11,9 @@
                 (lisp-value > ?ben-amount ?amount)))
 
 ; c
-(define c '(and (job ?all ?job)
-                (not (job ?all (computer . ?type)))
-                (supervisor ?all ?who)))
+(define c '(and (supervisor ?all ?who)
+                (job ?all ?job)
+                (not (job ?who (computer . ?type)))))
 
 (define (main args)
   (print-qeval a)
