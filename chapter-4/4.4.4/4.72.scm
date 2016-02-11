@@ -20,32 +20,32 @@
 
 (for-each (lambda (q) (qeval-add `(assert! ,q)))
           '(
-            (loop1 1 1)
-            (rule (loop1 ?x ?y)
-                  (loop1 ?x ?y))
+            (loop1 1)
+            (rule (loop1 ?x)
+                  (loop1 ?x))
 
-            (loop2 2 2)
-            (rule (loop2 ?x ?y)
-                  (loop2 ?x ?y))
+            (loop2 2)
+            (rule (loop2 ?x)
+                  (loop2 ?x))
 
-            (rule (loop ?x ?y)
-                  (or (loop1 ?x ?y)
-                      (loop2 ?x ?y)))
+            (rule (loop ?x)
+                  (or (loop1 ?x)
+                      (loop2 ?x)))
             ))
 
 (define (main args)
-  (print-qeval '(loop ?x ?y))
+  (print-qeval '(loop ?x))
   ;=>
-  ; (loop 1 1)
-  ; (loop 1 1)
-  ; (loop 1 1)
+  ; (loop 1)
+  ; (loop 1)
+  ; (loop 1)
   ; ... 
 
   ; interleave-delayed を使えば,
 
   ;=>
-  ; (loop 1 1)
-  ; (loop 2 2)
+  ; (loop 1)
+  ; (loop 2)
   ; ...
 
   ; と、交互に表示される.
