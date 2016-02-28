@@ -38,6 +38,8 @@
             (if (equal? val (binding-value binding))
               (extend var val merged)
               'failed))
+          ((depends-on? val var frame)
+           'failed)
           (else (extend var val merged)))))
 
 (define merge-frame-test-1
