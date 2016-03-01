@@ -49,37 +49,30 @@
           (else (extend var val merged)))))
 
 (define (conjoin conjuncts frame-stream)
-  (merge-conjunctions conjuncts
-                      the-empty-stream
-                      frame-stream))
+  (if (empty-conjunction? conjuncts)
+    frame-stream
+    (merge-conjunctions (rest-conjuncts conjuncts)
+                        (qeval (first-conjunct conjuncts) frame-stream)
+                        frame-stream)))
 
 (define (merge-conjunctions conjuncts merged-frame-stream frame-stream)
   (if (empty-conjunction? conjuncts)
     merged-frame-stream
     (let ((qeval-result
-            (qeval (first-conjunct conjuncts)
-                   frame-stream)))
-      (if (stream-null? merged-frame-stream)
+            (qeval (first-conjunct conjuncts) frame-stream)))
+      (let ((merge-result
+              (stream-flatmap
+                (lambda (frame1)
+                  (stream-filter
+                    (lambda (f) (not (eq? 'failed f)))
+                    (stream-map
+                      (lambda (frame2)
+                        (merge-frame frame1 frame2))
+                      qeval-result)))
+                merged-frame-stream)))
         (merge-conjunctions (rest-conjuncts conjuncts)
-                            qeval-result
-                            frame-stream)
-        (let ((merge-result
-                (stream-flatmap
-                  (lambda (frame1)
-                    (stream-filter
-                      (lambda (f)
-                        (not (stream-null? f)))
-                      (stream-map
-                        (lambda (frame2)
-                          (let ((merge-result (merge-frame frame1 frame2)))
-                            (if (eq? merge-result 'failed)
-                              the-empty-stream
-                              merge-result)))
-                        qeval-result)))
-                    merged-frame-stream)))
-              (merge-conjunctions (rest-conjuncts conjuncts)
-                                  merge-result
-                                  frame-stream))))))
+                            merge-result
+                            frame-stream)))))
 
 (put 'and 'qeval conjoin)
 
