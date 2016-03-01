@@ -6,46 +6,41 @@
 ; (y 2)  (y 5) => failed
 ; (z 3)        => success (z 3)
 ;        (u 4) => success (u 4)
-; (v w)  (v 5) => success (v w) (v 5) (w 5)
-; (v w)  (w 5) => success (v w) (v 5) (w 5)
+; (v w)  (v 5) => success (v 5) (w 5)
+; (v w)  (w 5) => success (v 5) (w 5)
 ; (a b)        => success (a b)
-; (c (c 6))    => failed
 
-(define (merge-frame frame1 frame2)
-  (merge-binding (append frame1 frame2) '()))
+; frameの変数には、変数か値しか束縛されないと思われるので depends-on? などチェックは不要
 
-(define (merge-binding frame merged)
+(define (merge-frame frame merged)
   (cond ((eq? merged 'failed) 'failed)
         ((null? frame) merged)
         (else
           (let ((binding (car frame))
                 (rest-frame (cdr frame)))
-            (merge-binding rest-frame
-                           (merge-match (binding-variable binding)
-                                        (binding-value binding)
-                                        rest-frame
-                                        merged))))))
+            (merge-frame rest-frame
+                         (merge-match (binding-variable binding)
+                                      (binding-value binding)
+                                      merged))))))
 
-(define (merge-match v1 v2 frame merged)
+(define (merge-match v1 v2 merged)
   (cond ((eq? merged 'failed) 'failed)
         ((equal? v1 v2) merged)
-        ((var? v1) (merge-if-possible v1 v2 frame merged))
-        ((var? v2) (merge-if-possible v2 v1 frame merged))
+        ((var? v1) (merge-if-possible v1 v2 merged))
+        ((var? v2) (merge-if-possible v2 v1 merged))
         (else 'failed)))
 
-(define (merge-if-possible var val frame merged)
-  (let ((binding (binding-in-frame var frame)))
+(define (merge-if-possible var val merged)
+  (let ((binding (binding-in-frame var merged)))
     (cond (binding
             (merge-match
-              val (binding-value binding) frame (extend var val merged)))
+              val (binding-value binding) merged))
           ((var? val)
-           (let ((binding (binding-in-frame val frame)))
+           (let ((binding (binding-in-frame val merged)))
              (if binding
                (merge-match
-                 var (binding-value binding) frame (extend var val merged))
+                 var (binding-value binding) merged)
                (extend var val merged))))
-          ((depends-on? val var frame)
-           'failed)
           (else (extend var val merged)))))
 
 (define (conjoin conjuncts frame-stream)
@@ -78,8 +73,6 @@
 
 (define merge-frame-test-1
   '(((? x) . 1)
-    ((? y) . 2)
-    ((? z) . 3)
     ((? v) . (? w))
     ((? a) . (? b))))
 
@@ -96,11 +89,11 @@
         (salary ?person ?amount)))
 
 (define test-query
-  '(lives-near ?x ?y))
+  '(replace ?x ?y))
 
 (define (main args)
   (print (merge-frame merge-frame-test-1 merge-frame-test-2))
-  ;=> (((? v) . 5) ((? w) . 5) ((? u) . 4) ((? x) . 1) ((? a) ? b) ((? w) . 5) ((? v) ? w) ((? z) . 3) ((? y) . 2) ((? x) . 1))
+  ;=> (((? a) ? b) ((? x) . 1) ((? u) . 4) ((? w) . 5) ((? v) . 5))
   (print-qeval test-query)
   ; TODO
   )
