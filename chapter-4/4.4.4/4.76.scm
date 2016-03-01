@@ -10,7 +10,7 @@
 ; (v w)  (w 5) => success (v 5) (w 5)
 ; (a b)        => success (a b)
 
-; frameの変数には、変数か値しか束縛されないと思われるので depends-on? などチェックは不要
+; frameの変数には、変数か値しか束縛されないと思われるので depends-on? などのチェックは不要
 
 (define (merge-frame frame merged)
   (cond ((eq? merged 'failed) 'failed)
@@ -83,17 +83,21 @@
     ((? w) . 5)
     ((? v) . 5)))
 
-(define test-query
-  '(and (job ?person ?j)
-        (address ?person ?where)
-        (salary ?person ?amount)))
-
-(define test-query
-  '(replace ?x ?y))
-
 (define (main args)
   (print (merge-frame merge-frame-test-1 merge-frame-test-2))
   ;=> (((? a) ? b) ((? x) . 1) ((? u) . 4) ((? w) . 5) ((? v) . 5))
-  (print-qeval test-query)
-  ; TODO
+  (print-qeval '(wheel ?x))
+  ;=>
+  ; (wheel (Warbucks Oliver))
+  ; (wheel (Warbucks Oliver))
+  ; (wheel (Bitdiddle Ben))
+  ; (wheel (Warbucks Oliver))
+  ; (wheel (Warbucks Oliver))
+  (print-qeval '(lives-near ?x ?y))
+  ; この実装では、andの各節を別々に処理する。
+  ; このため、lives-near のnot節が束縛が作られていない状態で評価されてしまい結果のフレームを生じない。
+
+  ;(print-qeval '(outranked-by ?x ?y))
+  ; outranked-by は規則を再帰的に呼び出している。
+  ; このため、束縛が作られていない状態で outranked-by が呼ばれ続けることになり、無限ループに陥る。
   )
