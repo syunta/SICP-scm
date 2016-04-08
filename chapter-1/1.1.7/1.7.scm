@@ -19,6 +19,19 @@
 (define (sqrt x)
   (sqrt-iter 1.0 x))
 
+(define (good-enough?-2 g1 g2)
+  (< (abs (- g1 g2)) 0.001))
+
+(define (sqrt-iter-2 g1 g2 x)
+  (if (good-enough?-2 g1 g2)
+    g1
+    (sqrt-iter-2 (improve g1 x)
+                 (improve g2 x)
+                 x)))
+
+(define (sqrt-2 x)
+  (sqrt-iter-2 1.0 1000.0 x))
+
 (define (main args)
   (print (sqrt 0.0001))
   ;=>
@@ -34,4 +47,9 @@
   ; 3162277.6601683795 + 3162277.660168379 の本来の結果は 6324555.3203367585 であるが、
   ; 精度が足りず 6324555.3203367589 に丸められる。
   ; 6324555.3203367589 / 2 は 3162277.6601683795 となるので、以後、同じ予測値が生成され続け無限ループになる。
+
+  (print (sqrt-2 0.0001))
+  ;=> 0.01
+  (print (sqrt-2 10000000000000))
+  ;=> 3162277.6601683795
   )
