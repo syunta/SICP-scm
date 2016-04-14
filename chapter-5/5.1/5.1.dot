@@ -1,0 +1,56 @@
+digraph graph_name {
+
+  graph [
+    charset = "UTF-8",
+    layout = "dot",
+    label = "",
+    bgcolor = "#343434",
+    fontcolor = white,
+    ranksep = 1.0,
+    nodesep = 0.9
+  ];
+
+  node [
+    colorscheme = "rdylgn11",
+    style = "filled",
+    fontname = "Consolas",
+    fontcolor = white,
+    color = 7,
+    fillcolor = 11,
+    height = 0.6,
+    width = 1.2
+  ];
+
+  edge [
+    colorscheme = "rdylgn11",
+    fontcolor = white,
+    fontname = "Consolas",
+    color = 7,
+    labelfloat = true
+  ];
+
+  // nodes
+  n [shape = box];
+  counter [shape = box];
+  product [shape = box];
+  "*" [shape = invtrapezium];
+  "+" [shape = invtrapezium];
+  ">" [shape = doublecircle];
+  one1 [label = 1, shape = triangle];
+  one2 [label = 1, shape = triangle];
+  one3 [label = 1, shape = triangle];
+
+  // edges
+  one1 -> product [label = "p<-1", arrowhead = odot, arrowsize = 2];
+  one2 -> counter [label = "c<-1", arrowhead = odot, arrowsize = 2];
+  counter -> ">"; 
+  n -> ">"; 
+  product -> "*" [headport = ne]; 
+  counter -> "*" [headport = nw]; 
+  one3 -> "+" [headport = ne];
+  counter -> "+" [headport = nw];
+  "+" -> counter [label = "c<-+", arrowhead = odot, arrowsize = 2, tailport = sw, headport = w];
+  "*" -> product [label = "p<-*", arrowhead = odot, arrowsize = 2, tailport = se, headport = e];
+
+  {rank = same; product; counter;}
+}
