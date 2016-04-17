@@ -1,0 +1,46 @@
+digraph graph_name {
+
+  graph [
+    charset = "UTF-8",
+    layout = "dot",
+    label = "",
+    bgcolor = "#343434",
+    fontcolor = white,
+    ranksep = 1.0,
+    nodesep = 0.9
+  ];
+
+  node [
+    colorscheme = "rdylgn11",
+    style = "filled",
+    fontname = "Consolas",
+    fontcolor = white,
+    color = 7,
+    fillcolor = 11,
+    height = 0.6,
+    width = 1.2
+  ];
+
+  edge [
+    colorscheme = "rdylgn11",
+    fontcolor = white,
+    fontname = "Consolas",
+    color = 7,
+    labelfloat = true
+  ];
+
+  // nodes
+  guess [shape = box];
+  x [shape = box];
+  "1.0" [shape = triangle];
+  improve [shape = invtrapezium];
+  "good-enough?" [shape = doublecircle];
+
+  // edges
+  "1.0" -> guess [label = "g<-1.0", arrowhead = odot, arrowsize = 2];
+  guess -> "good-enough?";
+  x -> "good-enough?";
+  x -> "improve";
+  guess -> improve [headport = n];
+  improve -> guess [label = "g<-improve", arrowhead = odot, arrowsize = 2, headport = e, tailport = s];
+}

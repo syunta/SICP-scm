@@ -1,0 +1,45 @@
+digraph graph_name {
+
+  graph [
+    charset = "UTF-8",
+    layout = "circo",
+    label = "",
+    bgcolor = "#343434",
+    fontcolor = white,
+    ranksep = 1.0,
+    nodesep = 0.9,
+    rankdir = LR
+  ];
+
+  node [
+    colorscheme = "rdylgn11",
+    style = "filled",
+    fontname = "Consolas",
+    fontcolor = white,
+    color = 7,
+    fillcolor = 11,
+    height = 0.6,
+    width = 1.2
+  ];
+
+  edge [
+    colorscheme = "rdylgn11",
+    fontcolor = white,
+    fontname = "Consolas",
+    color = 7,
+    labelfloat = true
+  ];
+
+  // nodes
+  start [shape = none, style = ""];
+  "g<-1.0" [shape = box];
+  "good-enough?" [shape = diamond];
+  done [shape = none, style = ""];
+  "g<-improve" [shape = box];
+
+  // edges
+  start -> "g<-1.0" -> "good-enough?";
+  "good-enough?" -> done [label = "yes"];
+  "good-enough?" -> "g<-improve" [label = "no", tailport = n]; 
+  "g<-improve" -> "good-enough?" [tailport = e, headport = e];
+}
