@@ -1,0 +1,47 @@
+digraph graph_name {
+
+  graph [
+    charset = "UTF-8",
+    layout = "dot",
+    label = "",
+    bgcolor = "#343434",
+    fontcolor = white,
+    ranksep = 1.0,
+    nodesep = 0.9
+  ];
+
+  node [
+    colorscheme = "rdylgn11",
+    style = "filled",
+    fontname = "Consolas",
+    fontcolor = white,
+    color = 7,
+    fillcolor = 11,
+    height = 0.6,
+    width = 1.2
+  ];
+
+  edge [
+    colorscheme = "rdylgn11",
+    fontcolor = white,
+    fontname = "Consolas",
+    color = 7,
+    labelfloat = true
+  ];
+
+  // nodes
+  start [shape = none, style = ""];
+  "p<-1" [shape = box];
+  "c<-1" [shape = box];
+  ">" [shape = diamond];
+  done [shape = none, style = ""];
+  "p<-*" [shape = box];
+  "c<-+" [shape = box];
+
+  // edges
+  start -> "p<-1" -> "c<-1" -> ">";
+  ">" -> done [label = "yes", tailport = e, headport = w];
+  ">" -> "p<-*" [label = "no"];
+  "p<-*" -> "c<-+" [tailport = s, headport = n];
+  "c<-+" -> ">" [tailport = w, headport = w];
+}
