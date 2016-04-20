@@ -1,0 +1,70 @@
+digraph graph_name {
+
+  graph [
+    charset = "UTF-8",
+    layout = "dot",
+    label = "",
+    bgcolor = "#343434",
+    fontcolor = white,
+    ranksep = 1.0,
+    nodesep = 0.9
+  ];
+
+  node [
+    colorscheme = "rdylgn11",
+    style = "filled",
+    fontname = "Consolas",
+    fontcolor = white,
+    color = 7,
+    fillcolor = 11,
+    height = 0.6,
+    width = 1.2
+  ];
+
+  edge [
+    colorscheme = "rdylgn11",
+    fontcolor = white,
+    fontname = "Consolas",
+    color = 7,
+    labelfloat = true
+  ];
+
+  // nodes
+  guess [shape = box];
+  x [shape = box];
+  t [shape = box];
+  "1.0" [shape = triangle];
+  "0" [shape = triangle];
+  "-1" [shape = triangle];
+  "2" [shape = triangle];
+  ">" [shape = doublecircle];
+  "-" [shape = invtrapezium];
+  "+" [shape = invtrapezium];
+  mul1 [label = "*", shape = invtrapezium];
+  mul2 [label = "*", shape = invtrapezium];
+  div1 [label = "/", shape = invtrapezium];
+  div2 [label = "/", shape = invtrapezium];
+
+  // edges
+  "1.0" -> guess [label = "g<-1.0", arrowhead = odot, arrowsize = 2];
+  guess -> mul1;
+  guess -> mul1;
+  mul1 -> t [label = "t<-*", arrowhead = odot, arrowsize = 2, tailport = s];
+  t -> "-";
+  x -> "-";
+  "-" -> t [label = "t<--", arrowhead = odot, arrowsize = 2, tailport = s];
+  t -> ">";
+  "0" -> ">";
+  t -> mul2;
+  "-1" -> mul2;
+  mul2 -> t [label = "t<-*", arrowhead = odot, arrowsize = 2, tailport = s];
+  x -> div1;
+  guess -> div1;
+  div1 -> t [label = "t<-/", arrowhead = odot, arrowsize = 2, tailport = s];
+  guess -> "+";
+  t -> "+";
+  "+" -> t [label = "t<-+", arrowhead = odot, arrowsize = 2, tailport = s];
+  t -> div2;
+  "2" -> div2;
+  div2 -> guess [label = "t<-/", arrowhead = odot, arrowsize = 2, tailport = s];
+}
