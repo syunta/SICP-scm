@@ -1,0 +1,54 @@
+digraph graph_name {
+
+  graph [
+    charset = "UTF-8",
+    layout = "dot",
+    label = "",
+    bgcolor = "#343434",
+    fontcolor = white,
+    ranksep = 1.0,
+    nodesep = 0.9
+  ];
+
+  node [
+    colorscheme = "rdylgn11",
+    style = "filled",
+    fontname = "Consolas",
+    fontcolor = white,
+    color = 7,
+    fillcolor = 11,
+    height = 0.6,
+    width = 1.2
+  ];
+
+  edge [
+    colorscheme = "rdylgn11",
+    fontcolor = white,
+    fontname = "Consolas",
+    color = 7,
+    labelfloat = true
+  ];
+
+  // nodes
+  n [shape = box];
+  b [shape = box];
+  counter [shape = box];
+  product [shape = box];
+  const0 [label = "0", shape = triangle];
+  const1 [label = "1", shape = triangle];
+  sub [label = "-", shape = invtrapezium];
+  mul [label = "*", shape = invtrapezium];
+  test [label = "=", shape = doublecircle];
+
+  // edges
+  n -> counter [label = "c<-n", arrowhead = odot, arrowsize = 2];
+  const1 -> product [label = "p<-1", arrowhead = odot, arrowsize = 2];
+  counter -> test;
+  const0 -> test;
+  counter -> sub;
+  const1 -> sub;
+  sub -> counter [label = "c<--", arrowhead = odot, arrowsize = 2, tailport = s];
+  b -> mul;
+  product -> mul;
+  mul -> product [label = "p<-*", arrowhead = odot, arrowsize = 2, tailport = s];
+}
