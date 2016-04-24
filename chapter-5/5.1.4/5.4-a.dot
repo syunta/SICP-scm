@@ -1,0 +1,60 @@
+digraph graph_name {
+
+  graph [
+    charset = "UTF-8",
+    layout = "dot",
+    label = "",
+    bgcolor = "#343434",
+    fontcolor = white,
+    ranksep = 1.0,
+    nodesep = 0.9
+  ];
+
+  node [
+    colorscheme = "rdylgn11",
+    style = "filled",
+    fontname = "Consolas",
+    fontcolor = white,
+    color = 7,
+    fillcolor = 11,
+    height = 0.6,
+    width = 1.2
+  ];
+
+  edge [
+    colorscheme = "rdylgn11",
+    fontcolor = white,
+    fontname = "Consolas",
+    color = 7,
+    labelfloat = true
+  ];
+
+  // nodes
+  stack [shape = box];
+  continue [shape = box];
+  n [shape = box];
+  b [shape = box];
+  val [shape = box];
+  const0 [label = "0", shape = triangle];
+  const1 [label = "1", shape = triangle];
+  label1 [label = "expt-done", shape = triangle];
+  label2 [label = "after-expt", shape = triangle];
+  sub [label = "-", shape = invtrapezium];
+  mul [label = "*", shape = invtrapezium];
+  test [label = "=", shape = doublecircle];
+
+  // edges
+  label1 -> continue [arrowhead = odot, arrowsize = 2];
+  label2 -> continue [arrowhead = odot, arrowsize = 2];
+  stack -> continue [label = "rc", arrowhead = odot, arrowsize = 2];
+  continue -> stack [label = "sc", arrowhead = odot, arrowsize = 2];
+  n -> test;
+  const0 -> test;
+  n -> sub;
+  const1 -> sub;
+  sub -> n [label = "n<--", arrowhead = odot, arrowsize = 2, tailport = s];
+  b -> mul;
+  val -> mul;
+  mul -> val [label = "v<-*", arrowhead = odot, arrowsize = 2, tailport = s];
+  const1 -> val [label = "v<-1", arrowhead = odot, arrowsize = 2];
+}
