@@ -4,12 +4,12 @@
        (square (cadr x)))))
 
 (define (f2 x y z)
-  (let ((f (lambda (a b)
-             (+ (square a)
-                (square b)))))
-  (cond ((< x y z) (f y z))
-        ((< y x z) (f x z))
-        (else (f x y)))))
+  (define (f a b)
+    (+ (square a)
+       (square b)))
+  (cond ((and (< x y) (< x z)) (f y z))
+        ((and (< y x) (< y z)) (f x z))
+        (else (f x y))))
 
 (define (main args)
   (print (f 1 2 3))
