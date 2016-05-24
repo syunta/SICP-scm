@@ -28,5 +28,12 @@
         (else (search-for-primes (+ 1 low) high))))
 
 (define (main args)
-  (search-for-primes 10 20)
+  (search-for-primes 1000 1020)
+  ; 1009 1013 1019
+  (search-for-primes 10000 10040)
+  ; 10007 10009 10037
+  (search-for-primes 100000 100050)
+  ; 100003 100019 100043
+  (search-for-primes 1000000 1000050)
+  ; 1000003 1000033 100037
   )
