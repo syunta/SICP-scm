@@ -16,15 +16,14 @@
 ; (y0 + 4y1 + y2) + (y2 + 4y3 + y4) + ...
 
 (define (simpson-integral f a b n)
-  (let ((h (/ (- b a) n)))
-    (let ((inc-2 (lambda (x)
-                   (+ x 2)))
-          (f2 (lambda (k)
-                (+ (f (+ a (* k h)))
-                   (* 4 (f (+ a (* (+ 1 k) h))))
-                   (f (+ a (* (+ 2 k) h)))))))
-      (* (/ h 3.0)
-         (sum f2 0 inc-2 n)))))
+  (define h (/ (- b a) n))
+  (define (inc-2 x) (+ x 2))
+  (define (f2 k)
+    (+ (f (+ a (* k h)))
+       (* 4 (f (+ a (* (+ 1 k) h))))
+       (f (+ a (* (+ 2 k) h)))))
+  (* (/ h 3.0)
+     (sum f2 0 inc-2 n)))
 
 (define (main args)
   (print (integral cube 0 1 0.01))
