@@ -1,0 +1,23 @@
+(define (make-rat n d)
+  (let ((g (gcd n d)))
+    (let ((num (/ n g))
+          (den (/ d g)))
+      (if (negative? d)
+        (cons (- num) (- den))
+        (cons num den)))))
+
+(define (numer x) (car x))
+(define (denom x) (cdr x))
+
+(define (print-rat x)
+  (newline)
+  (display (numer x))
+  (display "/")
+  (display (denom x)))
+
+(define (main args)
+  (print-rat (make-rat 12 36))
+  (print-rat (make-rat -12 36))
+  (print-rat (make-rat 12 -36))
+  (print-rat (make-rat -12 -36))
+  )
