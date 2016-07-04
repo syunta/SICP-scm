@@ -6,7 +6,7 @@
     (op (car sequence)
         (accumulate op initial (cdr sequence)))))
 
-(define (map p sequence)
+(define (map1 p sequence)
   (accumulate (lambda (x y) (cons (p x) y)) nil sequence))
 
 (define (append seq1 seq2)
@@ -21,7 +21,7 @@
               sequence))
 
 (define (main args)
-  (print (map square '(1 2 3 4)))
+  (print (map1 square '(1 2 3 4)))
   (print (append '(1 2) '(3 4)))
   (print (length '(1 2 3 4)))
   )
