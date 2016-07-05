@@ -1,5 +1,4 @@
-(add-load-path "../.." :relative)
-(load "lib/library.scm")
+(load "./2.41")
 
 (define (queens board-size)
   (define (queen-cols k)
@@ -46,4 +45,6 @@
 
 ; 対称性も謎
 
-(print (queens 5))
+(define (main args)
+  (print (queens 5))
+  )
