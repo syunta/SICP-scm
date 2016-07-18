@@ -1,4 +1,7 @@
 SICP-scm
 ========
 
-It is happy to use git when I answer sicp questions.
+My answers for SICP.
+
+English: https://mitpress.mit.edu/sicp/
+Japanese: http://sicp.iijlab.net/
