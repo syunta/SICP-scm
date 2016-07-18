@@ -1,7 +1,7 @@
 SICP-scm
 ========
 
-My answers for SICP.
+My answers of SICP.
 
 * English: https://mitpress.mit.edu/sicp/
 * Japanese: http://sicp.iijlab.net/
