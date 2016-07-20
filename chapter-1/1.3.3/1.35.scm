@@ -14,11 +14,11 @@
 ; 両辺をφで割ると
 ; φ = 1 + 1/φ
 
-(define (phi x)
+(define phi
   (fixed-point (lambda (x) (+ 1 (/ 1 x)))
                1.0))
 
 (define (main args)
-  (print (phi 1000))
+  (print phi)
   ;=> 1.6180
   )
