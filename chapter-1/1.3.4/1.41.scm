@@ -4,12 +4,20 @@
 
 (define (inc x) (+ x 1))
 
+(lambda (x) ((
+
 (define (main args)
   (print ((double inc) 3)) ;=> 5
   (print
     (((double (double double)) inc) 5))
   ;=> 21
-  ; double に double を渡すと、2回作用させる手続きをさらに2回作用させるので、4回作用させる手続きを返す手続きができる。
-  ; double に (double double) を渡すと、4回作用させる手続きをさらに4回作用させるので、16回作用させる手続きを返す手続きができる。
+  ;
+  ; (double double) は以下のような関数を返す
+  ;
+  ; (lambda (x) ((lambda (x) (f (f x)))
+  ;               ((lambda (x) (f (f x))) x)))
+  ;
+  ; (double (double double)) 上記の関数のfにそれぞれ同じ関数を入れたものを返す
+  ;
+  ; よって、評価は16回起きる。
   )
-
