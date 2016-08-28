@@ -295,4 +295,6 @@ ev-definition-1
   (goto (reg continue))
    )))
 
+(define the-global-environment (setup-environment))
+
 '(EXPLICIT CONTROL EVALUATOR LOADED)
