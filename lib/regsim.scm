@@ -12,6 +12,7 @@
 ;;; Also, comment in/out the print-stack-statistics op in make-new-machine
 ;;; To find this stack code below, look for comments with **
 
+(define true #t)
 (define false #f)
 
 (define (make-machine register-names ops controller-text)
