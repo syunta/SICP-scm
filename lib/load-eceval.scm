@@ -4,17 +4,9 @@
 
 ;;;; **NB** The actual "load" calls are implementation dependent.
 
-(load "./ch5-regsim")			;reg machine simulator
+(load "regsim")			;reg machine simulator
 
 ;; **NB** next file contains another "load"
-(load "./ch5-eceval-support")		;simulation of machine operations
+(load "eceval-support")		;simulation of machine operations
 
-(load "./ch5-eceval")			;eceval itself
-
-(define true #t)
-(define false #f)
-(define the-global-environment (setup-environment))
-
-(define (main args)
-  (start eceval)
-  )
+(load "eceval")			;eceval itself
