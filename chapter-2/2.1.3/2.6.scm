@@ -124,8 +124,15 @@
 (define (print-lambda f)
   (print (lambda->int f)))
 
+; おまけ 掛け算
+(define (sub n m)
+  (lambda (f)
+    (lambda (x)
+      ((m (n f)) x))))
+
 (define (main args)
   (print-lambda one)
   (print-lambda two)
   (print-lambda (add one two))
+  (print-lambda (sub (add one two) (add two two)))
   )
