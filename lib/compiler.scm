@@ -377,4 +377,14 @@
                 (registers-modified seq2))
     (append (statements seq1) (statements seq2))))
 
+(define (print-compiled-code codes)
+  (for-each
+    (lambda (code)
+      (newline)
+      (if (symbol? code)
+        (newline)
+        (display "  "))
+      (display code))
+    (caddr codes)))
+
 '(COMPILER LOADED)
