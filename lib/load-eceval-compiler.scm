@@ -8,13 +8,13 @@
 
 ;;;; **NB** The actual "load" calls are implementation dependent.
 
-(load "ch5-regsim")			;reg machine simulator
+(load "regsim")			;reg machine simulator
 
 ;; **NB** next file contains another "load"
-(load "ch5-eceval-support")		;simulation of machine operations
+(load "eceval-support")		;simulation of machine operations
 
 ;;**NB** eceval-compiler *must* be loaded after eceval-support,
 ;;  so that the version of user-print in eceval-compiler will override
 ;;  the version in eceval-support
-(load "ch5-eceval-compiler")		;eceval itself
+(load "eceval-compiler")		;eceval itself
 					;and interface to compiled code
