@@ -132,7 +132,7 @@
 
 (define eceval
   (make-machine
-   '(exp env val proc argl continue unev
+   '(exp env val proc argl continue unev arg1 arg2
 	 compapp			;*for compiled to call interpreted
 	 )
    eceval-operations
