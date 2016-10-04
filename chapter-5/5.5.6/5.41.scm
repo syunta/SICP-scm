@@ -10,7 +10,7 @@
       'not-found
       (let ((dnum (scan-cframe (car cenv) 0)))
         (if dnum
-          (list fnum dnum)
+          (make-address fnum dnum)
           (scan-cenv (cdr cenv) (+ 1 fnum))))))
   (scan-cenv cenv 0))
 
