@@ -385,6 +385,6 @@
         (newline)
         (display "  "))
       (display code))
-    (caddr codes)))
+    (statements codes)))
 
 '(COMPILER LOADED)
