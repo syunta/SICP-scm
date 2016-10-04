@@ -32,8 +32,8 @@
 
 (define let-assignment
   '(lambda '<vars>
-     (let ((u *unassigned*)
-           (v *unassigned*))
+     (let ((u '*unassigned*)
+           (v '*unassigned*))
        (set! u '<e1>)
        (set! v '<e2>)
        '<e3>)))
@@ -46,15 +46,17 @@
 (define (lambda-expressions exp)
   (filter (lambda (x) (not (eq? 'define (car x)))) exp))
 
-(define (scan-out-defines exps)
-  (let ((vars (map definition-variable (lambda-defines exps)))
-        (vals (map definition-value (lambda-defines exps))))
-    (list ;bodyは式のリスト
-      (make-let (map (lambda (var) (list var '*unassigned*))
-                     vars)
-                (append (map (lambda (var val) (make-assignment var val))
-                             vars vals)
-                        (lambda-expressions exps))))))
+(define (scan-out-defines body)
+  (let ((vars (map definition-variable (lambda-defines body)))
+        (vals (map definition-value (lambda-defines body))))
+    (if (null? vars)
+      body ;内部定義が見つからない場合、変換を行わない
+      (list ;bodyは式のリスト
+        (make-let (map (lambda (var) (list var ''*unassigned*))
+                       vars)
+                  (append (map (lambda (var val) (make-assignment var val))
+                               vars vals)
+                          (lambda-expressions body)))))))
 ; c
 
 ; procedure-bodyに組み込むデメリット
@@ -66,7 +68,13 @@
 ; 変換前のコードを別に保持する必要が出てくる。
 ; procedure-bodyで変換しておくと、変換前のコードを保持する必要はない。
 
-; procedure-bodyで変換して変換しておくといい。
+; 変換前のコードを使いたい場合は特になさそうなのでmake-procedureで変換しておくと良さそう。
+
+;(define (make-procedure parameters body env)
+;  (list 'procedure parameters (scan-out-defines body) env))
+
+(define (make-procedure parameters body env)
+  (list 'procedure parameters (scan-out-defines body) env))
 
 (define (main args)
   ;(driver-loop)
@@ -79,4 +87,12 @@
   (print (equal? (scan-out-defines internal-definition-body)
                  let-assignment-body))
   ;=> #t
+
+  (print (eval '((lambda (x)
+                   (define u 1)
+                   (define v 2)
+                   (+ x u v))
+                 10)
+               the-global-environment))
+  ;=> 13
   )
