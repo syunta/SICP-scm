@@ -27,25 +27,19 @@
 (define the-empty-mobile '())
 (define the-empty-mobile? null?)
 
-(define (balanced? mobile)
-  (if (the-empty-mobile? mobile)
+(define (balanced? structure)
+  (if (weight? structure)
     #t
-    (let ((left (left-branch mobile))
-          (right (right-branch mobile)))
+    (let ((left (left-branch structure))
+          (right (right-branch structure)))
       (and (= (torque left)
               (torque right))
-           (balanced? (sub-mobile left))
-           (balanced? (sub-mobile right))))))
+           (balanced? (branch-structure left))
+           (balanced? (branch-structure right))))))
 
 (define (torque branch)
   (* (branch-length branch)
      (count-weight branch)))
-
-(define (sub-mobile branch)
-  (let ((structure (branch-structure branch)))
-    (if (weight? structure)
-      the-empty-mobile
-      structure)))
 
 ; d
 (define (make-mobile-2 left right)
