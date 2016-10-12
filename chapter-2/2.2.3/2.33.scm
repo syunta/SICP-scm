@@ -13,10 +13,7 @@
   (accumulate cons seq2 seq1))
 
 (define (length sequence)
-  (accumulate (lambda (x acc)
-                (if (null? x)
-                  acc
-                  (+ 1 acc)))
+  (accumulate (lambda (_ acc) (+ 1 acc))
               0
               sequence))
 
