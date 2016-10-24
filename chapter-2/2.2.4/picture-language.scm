@@ -22,7 +22,7 @@
   (gl-clear GL_COLOR_BUFFER_BIT)
   (gl-color 0.0 0.0 0.0)
   (gl-begin GL_LINES)
-  (painter-b frame)
+  (painter-c frame)
   (gl-end)
   (gl-flush)
   )
