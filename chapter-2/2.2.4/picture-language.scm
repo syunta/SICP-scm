@@ -7,6 +7,7 @@
 (load "./2.47")
 (load "./2.48")
 (load "./2.49")
+(load "./2.50")
 
 (define frame (make-frame (make-vect 0 0) (make-vect 1 0) (make-vect 0 1)))
 
@@ -31,7 +32,11 @@
   ;(painter-a frame)
   ;(painter-b frame)
   ;(painter-c frame)
-  (wave frame)
+  ;(wave frame)
+  ;; 2.50
+  ;((flip-horiz wave) frame)
+  ;((rotate180 wave) frame)
+  ((rotate270 wave) frame)
 
   (gl-end)
   (gl-flush)
