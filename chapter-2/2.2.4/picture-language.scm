@@ -1,5 +1,6 @@
 (use gl)
 (use gl.glut)
+(load "./picture-language-support")
 ;;(load "./2.45")
 (load "./2.46")
 (load "./2.47")

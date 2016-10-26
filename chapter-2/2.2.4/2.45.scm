@@ -1,5 +1,3 @@
-(load "./2.44")
-
 (define (split f1 f2)
   (define (split painter n)
     (if (= n 0)
