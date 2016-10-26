@@ -1,7 +1,8 @@
 (use gl)
 (use gl.glut)
 (load "./picture-language-support")
-;;(load "./2.45")
+(load "./2.44")
+;(load "./2.45")
 (load "./2.46")
 (load "./2.47")
 (load "./2.48")
@@ -23,7 +24,15 @@
   (gl-clear GL_COLOR_BUFFER_BIT)
   (gl-color 0.0 0.0 0.0)
   (gl-begin GL_LINES)
+
+  ;; 2.44
+  ;((up-split wave 4) frame)
+  ;; 2.49
+  ;(painter-a frame)
+  ;(painter-b frame)
+  ;(painter-c frame)
   (wave frame)
+
   (gl-end)
   (gl-flush)
   )
