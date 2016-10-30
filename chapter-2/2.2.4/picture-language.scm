@@ -9,6 +9,7 @@
 (load "./2.49")
 (load "./2.50")
 (load "./2.51")
+(load "./2.52")
 
 (define frame (make-frame (make-vect 0 0) (make-vect 1 0) (make-vect 0 1)))
 
@@ -40,7 +41,11 @@
   ;((rotate270 wave) frame)
   ;; 2.51
   ;((below wave wave) frame)
-  ((below2 wave wave) frame)
+  ;((below2 wave wave) frame)
+  ;; 2.52
+  ;(laughing-wave frame)
+  ;((corner-split-2 wave 5) frame)
+  ((square-limit-2 wave 5) frame)
 
   (gl-end)
   (gl-flush)
