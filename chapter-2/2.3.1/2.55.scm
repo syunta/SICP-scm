@@ -3,6 +3,6 @@
   ;=> quote
 
   ; ''abracadabra
-  ; (quote 'abracadabra)
-  ; のように解釈されるから
+  ; (quote (quote abracadabra))
+  ; 外側の quote が (quote abracadabra) をそのまま返す
   )
