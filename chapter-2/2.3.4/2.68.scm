@@ -15,7 +15,7 @@
           ((memq s (symbols (right-branch tree)))
            (iter (right-branch tree) (cons 1 bits)))
           (else
-            (error "ENCODE-SYMBOL --Symbol Not Found"))))
+            (error "ENCODE-SYMBOL -- Symbol Not Found " s))))
   (iter tree '()))
 
 (define (main args)
