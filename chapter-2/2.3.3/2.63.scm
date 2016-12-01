@@ -55,6 +55,13 @@
   (print (equal? (tree->list-1 set3) (tree->list-2 set3)))
 
   ; b
-  ; tree->list(copy-to-list)の再帰呼び出しの増加の程度は同じ
-  ; ただし、appendを使っている分、tree->list-1の方がリスト走査の増加の程度は高い
+  ; appendを使っている分、tree->list-1の方がリスト走査の増加の程度は高い
+  ;
+  ; 釣り合った2進木とすると append に渡される left-branch で作られたリストの長さはせいぜい元のリストの半分
+  ; よって append を使うことでかかるオーバーヘッドは n/2
+  ; 再帰のたびに n/2 になるので、 append 自体の計算量は Θ(logn)
+  ; これが n回 繰り返されるので、Θ (nlogn)
+  ;
+  ; tree->list-2 で使う cons の計算量は Θ(1)
+  ; これが n回 繰り返されるので、Θ(n)
   )
