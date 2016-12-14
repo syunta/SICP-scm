@@ -39,6 +39,7 @@
 ;
 ; これまでに実装してきた (install-***-package) のように、
 ; 合併した事業所のデータ構造にあわせて package を追加してあげればよい
+; 事業所を示すタグ名が被らないことに注意する
 
 (define (get-record file name)
   (let ((tags (type-tag file)))
