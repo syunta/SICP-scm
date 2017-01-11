@@ -2,30 +2,25 @@
 
 (define (attach-tag type-tag contents)
   (if (number? contents)
-    (list contents)
+    contents
     (cons type-tag contents)))
 
 (define (type-tag datum)
-  (if (pair? datum)
-    (if (number? (car datum))
-      'scheme-number
-      (car datum))
-    (error "Bad tagged datum -- TYPE-TAG" datum)))
+  (cond ((number? datum) 'scheme-number)
+        ((pair? datum) (car datum))
+        (else (error "Bad tagged datum -- TYPE-TAG" datum))))
 
 (define (contents datum)
-  (if (pair? datum)
-    (if (number? (car datum))
-      (car datum)
-      (cdr datum))
-    (error "Bad tagged datum -- CONTENTS" datum)))
+  (cond ((number? datum) datum)
+        ((pair? datum) (cdr datum))
+        (else (error "Bad tagged datum -- CONTENTS" datum))))
 
 (define (install-scheme-number-package)
   (put 'add '(scheme-number scheme-number) +)
   (put 'sub '(scheme-number scheme-number) -)
   (put 'mul '(scheme-number scheme-number) *)
   (put 'div '(scheme-number scheme-number) /)
-  (put 'make 'scheme-number
-       (lambda (x) (attach-tag '_ x)))
+  (put 'make 'scheme-number (lambda (x) x))
   'done)
 
 (define (main args)
