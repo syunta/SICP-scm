@@ -1,23 +1,4 @@
-(add-load-path "../2.5.1" :relative)
-(load "2.77")
-
-; 通常の数をタグ付きのscheme-numberではなく数それ自身として表現
-(define (attach-tag type-tag contents)
-  (if (number? contents)
-    contents
-    (cons type-tag contents)))
-
-(define (type-tag datum)
-  (cond ((number? datum) 'scheme-number)
-        ((pair? datum) (car datum))
-        (else (error "Bad tagged datum -- TYPE-TAG" datum))))
-
-(define (contents datum)
-  (cond ((number? datum) datum)
-        ((pair? datum) (cdr datum))
-        (else (error "Bad tagged datum -- CONTENTS" datum))))
-
-(define (=zero? x) (apply-generic '=zero? x))
+(load "./2.88")
 
 (define (install-scheme-number-package)
   (put 'add '(scheme-number scheme-number) +)
@@ -203,9 +184,6 @@
   (put 'make 'polynomial
        (lambda (var terms) (tag (make-poly var terms))))
   'done)
-
-(define (make-polynomial var terms)
-  ((get 'make 'polynomial) var terms))
 
 (define (main args)
   (install-polar-package)

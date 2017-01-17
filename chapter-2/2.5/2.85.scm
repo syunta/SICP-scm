@@ -1,7 +1,5 @@
 (load "./2.84")
 
-(define (equ? x y) (apply-generic 'equ? x y))
-
 (define (project arg)
   (let ((t1->t2 (get 'drop (type-tag arg))))
     (if t1->t2

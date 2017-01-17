@@ -1,5 +1,4 @@
-(add-load-path "../2.5.1" :relative)
-(load "2.77")
+(load "./2.80")
 
 ; 実数は一旦考えずに、
 ; 整数のみのscheme-number -> rational -> complex の塔とする

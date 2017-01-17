@@ -1,5 +1,4 @@
-(add-load-path "../2.5.1" :relative)
-(load "2.77")
+(load "./2.77")
 
 ; a
 ; 無限のループに陥る
