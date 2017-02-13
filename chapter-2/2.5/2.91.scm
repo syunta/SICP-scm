@@ -84,9 +84,9 @@
 
   (define (div-poly p1 p2)
     (if (same-variable? (variable p1) (variable p2))
-      (make-poly (variable p1)
-                 (div-terms (term-list p1)
-                            (term-list p2)))
+      (let ((result (div-terms (term-list p1) (term-list p2))))
+        (list (make-poly (variable p1) (car result))
+              (make-poly (variable p1) (cadr result))))
       (error "Polys not in same var -- ADD-POLY"
              (list p1 p2))))
 
@@ -109,7 +109,8 @@
                             (the-empty-termlist))
                           L2))
                       L2)))
-              (adjoin-term (make-term new-o new-c) rest-of-result)))))))
+              (list (adjoin-term (make-term new-o new-c) (car rest-of-result))
+                    (cadr rest-of-result))))))))
 
   (define (negate-poly p)
     (make-poly (variable p)
@@ -139,7 +140,11 @@
   (put 'sub '(polynomial polynomial)
        (lambda (p1 p2) (tag (sub-poly p1 p2))))
   (put 'div '(polynomial polynomial)
-       (lambda (p1 p2) (tag (div-poly p1 p2))))
+       (lambda (p1 p2)
+         (let ((result (div-poly p1 p2)))
+           (list (tag (car result))
+                 (tag (cadr result))))))
+
   (put 'negate '(polynomial)
        (lambda (p) (tag (negate-poly p))))
   (put '=zero? '(polynomial)
