@@ -23,40 +23,40 @@
 ; b
 
 (define internal-definition
-  '(lambda '<vars>
-     (define u '<e1>)
-     (define v '<e2>)
-     '<e3>))
-
-(define internal-definition-body (cddr internal-definition))
+  '(lambda <vars>
+     (define u <e1>)
+     (define v <e2>)
+     <e3>))
 
 (define let-assignment
-  '(lambda '<vars>
+  '(lambda <vars>
      (let ((u '*unassigned*)
            (v '*unassigned*))
-       (set! u '<e1>)
-       (set! v '<e2>)
-       '<e3>)))
+       (set! u <e1>)
+       (set! v <e2>)
+       <e3>)))
 
+(define internal-definition-body (cddr internal-definition))
 (define let-assignment-body (cddr let-assignment))
 
-(define (lambda-defines exp)
-  (filter (lambda (x) (eq? 'define (car x))) exp))
+(define (lambda-defines exps)
+  (filter definition? exps))
 
-(define (lambda-expressions exp)
-  (filter (lambda (x) (not (eq? 'define (car x)))) exp))
+(define (lambda-expressions exps)
+  (filter (lambda (exp) (not (definition? exp))) exps))
 
 (define (scan-out-defines body)
-  (let ((vars (map definition-variable (lambda-defines body)))
-        (vals (map definition-value (lambda-defines body))))
-    (if (null? vars)
-      body ;内部定義が見つからない場合、変換を行わない
-      (list ;bodyは式のリスト
-        (make-let (map (lambda (var) (list var ''*unassigned*))
-                       vars)
-                  (append (map (lambda (var val) (make-assignment var val))
-                               vars vals)
-                          (lambda-expressions body)))))))
+  (let ((internal-definitions (lambda-defines body)))
+    (let ((vars (map definition-variable internal-definitions))
+          (vals (map definition-value internal-definitions)))
+      (if (null? vars)
+        body ;内部定義が見つからない場合、変換を行わない
+        (list ;bodyは式のリスト
+          (make-let (map (lambda (var) (list var ''*unassigned*))
+                         vars)
+                    (append (map (lambda (var val) (make-assignment var val))
+                                 vars vals)
+                            (lambda-expressions body))))))))
 ; c
 
 ; procedure-bodyに組み込むデメリット
