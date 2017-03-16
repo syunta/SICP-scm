@@ -37,9 +37,10 @@
           (let-expressions bindings))))
 
 (define (main args)
-  (eval '(let ((a 5)
-               (b 10))
-           (+ a b))
-        the-global-environment)
+  (print
+    (eval '(let ((a 5)
+                 (b 10))
+             (+ a b))
+          the-global-environment))
   ;=> 15
   )
