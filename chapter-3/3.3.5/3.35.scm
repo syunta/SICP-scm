@@ -32,6 +32,8 @@
 (probe "b" b)
 
 (set-value! b 9 'user)
+(forget-value! b 'user)
+(set-value! b 9 'user)
 
 ;=>
 ; Probe: b = 9
