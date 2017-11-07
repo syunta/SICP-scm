@@ -1,5 +1,4 @@
-(add-load-path "../1.2.6/" :relative)
-(load "1.21")
+(load "./1.21")
 (load "./1.31")
 
 (define (prime? n)
