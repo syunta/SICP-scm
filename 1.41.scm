@@ -4,8 +4,6 @@
 
 (define (inc x) (+ x 1))
 
-(lambda (x) ((
-
 (define (main args)
   (print ((double inc) 3)) ;=> 5
   (print
