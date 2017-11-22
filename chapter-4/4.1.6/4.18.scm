@@ -1,4 +1,5 @@
-(load "../../lib/eval-apply")
+(load "../../lib/stream")
+(define integral delayed-integral)
 
 '(lambda (x)
    (let ((u '*unassigned*)
@@ -35,3 +36,7 @@
     (set! y (integral (delay dy) y0 dt))
     (set! dy (stream-map f y))
     y))
+
+(define (main args)
+  (print (stream-ref (solve (lambda (x) x) 1 0.001) 100))
+  )
