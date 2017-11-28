@@ -1,6 +1,5 @@
 (define nil '())
 
-
 (define (subsets s)
   (if (null? s)
     (list nil)
