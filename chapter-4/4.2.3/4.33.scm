@@ -26,7 +26,7 @@
 (define (text-of-quotation exp env)
   (let ((text (cadr exp)))
     (if (pair? text)
-      (actual-value (text->list text) env)
+      (eval (text->list text) env)
       text)))
 
 (define (text->list seq)
