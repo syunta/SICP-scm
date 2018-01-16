@@ -1,5 +1,4 @@
-(add-load-path "../../lib" :relative)
-(load "table")
+(load "./table")
 
 ; a
 ;

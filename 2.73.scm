@@ -1,7 +1,5 @@
-(add-load-path "../../lib" :relative)
-(add-load-path "../2.3.2" :relative)
-(load "table")
-(load "2.56")
+(load "./table")
+(load "./2.56")
 
 (define (deriv exp var)
   (cond ((number? exp) 0)

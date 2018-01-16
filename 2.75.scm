@@ -1,5 +1,4 @@
-(add-load-path "../../lib" :relative)
-(load "table")
+(load "./table")
 
 (define (real-part z) (apply-generic 'real-part z))
 (define (imag-part z) (apply-generic 'imag-part z))
