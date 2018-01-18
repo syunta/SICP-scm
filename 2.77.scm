@@ -1,5 +1,4 @@
-(add-load-path "../../lib" :relative)
-(load "table")
+(load "./table")
 
 (define (attach-tag type-tag contents)
   (cons type-tag contents))
