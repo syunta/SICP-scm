@@ -30,8 +30,7 @@
         (aproc (analyze (if-fail-alternative exp))))
     (lambda (env succeed fail)
       (cproc env
-             (lambda (consequent-value fail)
-               (succeed consequent-value fail))
+             succeed
              (lambda ()
                (aproc env succeed fail))))))
 
