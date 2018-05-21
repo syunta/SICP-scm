@@ -1,4 +1,4 @@
-(load "../../lib/stream")
+(load "./stream")
 
 (define (sign-change-detector current-value last-value)
   (cond ((and (< current-value 0) (<= 0 last-value)) 1)

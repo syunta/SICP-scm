@@ -1,4 +1,4 @@
-(load "../../lib/stream")
+(load "./stream")
 
 (define (RC R C dt)
   (lambda (i v0)

@@ -1,4 +1,4 @@
-(load "../../lib/stream")
+(load "./stream")
 
 (display-stream
   (stream-map (lambda (x y) (* x y))

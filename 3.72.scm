@@ -13,8 +13,8 @@
           (if (= key next-key)
             (go (stream-cdr s) key (cons (stream-car s) element))
             (cons-stream result
-                         (go s next-key nil)))))))
-  (go s (weight (stream-car s)) nil))
+                         (go s next-key '())))))))
+  (go s (weight (stream-car s)) '()))
 
 (define grouping-square-sums
   (stream-group-by square-sum

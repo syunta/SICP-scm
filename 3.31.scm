@@ -5,8 +5,8 @@
 
 
 ;  procを呼び出さないシミュレーション
-(add-load-path "." :relative) (load "simulator.scm")
-(add-load-path "../3.3.2" :relative) (load "queue.scm")
+(load "./simulator.scm")
+(load "./queue.scm")
 
 (define (make-wire)
   (let ((signal-value 0) (action-procedures '()))

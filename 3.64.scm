@@ -1,4 +1,4 @@
-(load "../../lib/stream")
+(load "./stream")
 
 (define (stream-limit stream tolerance)
   (let ((s1 (stream-car stream))

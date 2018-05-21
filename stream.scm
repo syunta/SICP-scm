@@ -1,5 +1,3 @@
-(add-load-path "." :relative) (load "library")
-
 (define the-empty-stream '())
 
 (define stream-null? null?)
@@ -106,6 +104,12 @@
                                (sqrt-improve guess x))
                              guesses)))
   guesses)
+
+(define (sqrt-improve guess x)
+  (average guess (/ x guess)))
+
+(define (average . args)
+  (/ (fold + 0.0 args) (length args)))
 
 (define (euler-transform s)
   (let ((s0 (stream-ref s 0))           ; Sn-1

@@ -1,6 +1,6 @@
 ; queueを使ってのシミュレーション
-(add-load-path "." :relative) (load "simulator.scm")
-(add-load-path "../3.3.2" :relative) (load "queue.scm")
+(load "./simulator.scm")
+(load "./queue.scm")
 
 (define inverter-delay 2)
 (define and-gate-delay 3)
@@ -40,7 +40,7 @@
 
 
 ; stackを使ってのシミュレーション
-(load "stack.scm")
+(load "./stack.scm")
 (define empty-queue? empty-stack?)
 (define front-queue front-stack)
 (define insert-queue! insert-stack!)

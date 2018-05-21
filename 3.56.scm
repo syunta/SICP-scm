@@ -1,4 +1,4 @@
-(load "../../lib/stream")
+(load "./stream")
 
 (define s (cons-stream 1
                        (merge (scale-stream s 5)

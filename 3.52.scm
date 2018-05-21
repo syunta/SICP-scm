@@ -1,4 +1,4 @@
-(load "../../lib/stream")
+(load "./stream")
 
 (define sum 0)
 

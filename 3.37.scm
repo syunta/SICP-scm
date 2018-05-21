@@ -1,5 +1,4 @@
-(add-load-path "." :relative)
-(load "constraint_system.scm")
+(load "./constraint_system.scm")
 
 (define (celsius-fahrenheit-converter x)
   (c+ (c* (c/ (cv 9) (cv 5)) x)

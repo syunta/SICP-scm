@@ -1,5 +1,4 @@
-(add-load-path "." :relative)
-(load "constraint_system.scm")
+(load "./constraint_system.scm")
 
 (define (squarere a b)
   (multiplier a a b))

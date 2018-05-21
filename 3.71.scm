@@ -1,5 +1,8 @@
 (load "./3.70")
 
+(define (cube x)
+  (* x x x))
+
 (define (cubic-sum couple)
   (+ (cube (car couple)) (cube (cadr couple))))
 

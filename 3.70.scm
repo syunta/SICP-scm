@@ -1,4 +1,4 @@
-(load "../../lib/stream")
+(load "./stream")
 
 (define (merge-weighted weight s1 s2)
   (cond ((stream-null? s1) s2)
@@ -22,6 +22,12 @@
       (stream-map (lambda (x) (list (stream-car s) x))
                   (stream-cdr t))
       (weighted-pairs weight (stream-cdr s) (stream-cdr t)))))
+
+(define (accumulate op initial seq)
+  (if (null? seq)
+    initial
+    (op (car seq)
+        (accumulate op initial (cdr seq)))))
 
 (define (sum-couple couple) (accumulate + 0 couple))
 
