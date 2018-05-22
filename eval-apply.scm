@@ -411,6 +411,7 @@
         (list '>= >=)
         (list '<= <=)
         (list 'eq? eq?)
+        (list 'print print)
         ; ⟨基本手続きが続く⟩
         ))
 

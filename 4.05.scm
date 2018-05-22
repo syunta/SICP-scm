@@ -1,4 +1,4 @@
-(load "../../lib/eval-apply")
+(load "./eval-apply")
 
 (define (=>-clause? clause) (eq? (cadr clause) '=>))
 (define (cond-test clause) (car clause))

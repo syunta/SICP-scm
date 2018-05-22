@@ -1,4 +1,4 @@
-(load "../../lib/stream")
+(load "./stream")
 
 (define (rand-update x)
   (let ((a 1664525) (b 1013904223) (c (expt 2 32)))

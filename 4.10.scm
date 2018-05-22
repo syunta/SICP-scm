@@ -1,4 +1,4 @@
-(load "../../lib/eval-apply")
+(load "./eval-apply")
 
 ; (let (var1 exp1 var2 exp2 ...)
 ;   <body>)
@@ -19,8 +19,9 @@
 (define the-global-environment (setup-environment))
 
 (define (main args)
-  (driver-loop)
-  ;(let (a 10 b 20 c 300)
-  ;  (cons a (cons b (cons c '()))))
+  (print
+    (eval '(let (a 10 b 20 c 300)
+             (cons a (cons b (cons c '()))))
+          the-global-environment))
   ;=> (10 20 300)
   )

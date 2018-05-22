@@ -1,4 +1,4 @@
-(load "../../lib/eval-apply")
+(load "./eval-apply")
 
 ; 仕様
 ; unbind!は、defineと対になるようにする。
@@ -86,14 +86,19 @@
   (print frame)
   ;=> (())
 
-  (driver-loop)
-  ; (define x 10) => ok
-  ; x => 10
-  ; (define (not-remove-x-in-global)
-  ;   (define x 20)
-  ;   (unbind! x)) => ok
-  ; (not-remove-x-in-global) => ok
-  ; x => 10
-  ; (unbind! x) => ok
-  ; x => Unbound variable x
+  (eval '(begin
+           (define x 10)
+           (print x)
+           ;=> 10
+           (define (do-not-remove-x-in-global)
+             (define x 20)
+             (unbind! x))
+           (do-not-remove-x-in-global)
+           (print x)
+           ;=> 10
+           (unbind! x)
+           (print x)
+           ;=> Unbound variable x
+           )
+        the-global-environment)
   )

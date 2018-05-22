@@ -1,4 +1,4 @@
-(load "../../lib/eval-apply")
+(load "./eval-apply")
 
 (define (and? exp) (tagged-list? exp 'and))
 (define (or? exp) (tagged-list? exp 'or))

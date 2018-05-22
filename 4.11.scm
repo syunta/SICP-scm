@@ -1,4 +1,4 @@
-(load "../../lib/eval-apply")
+(load "./eval-apply")
 
 ;frame construction: ((var1 . val1) (var2 . val2) ... )
 

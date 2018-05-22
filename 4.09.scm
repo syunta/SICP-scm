@@ -1,5 +1,4 @@
-(load "../../lib/eval-apply")
-(load "../../lib/library")
+(load "./eval-apply")
 ; do 
 ; ((variable init [step]) …) (test expr …) body …
 
@@ -30,6 +29,9 @@
 (define (do-variables exp) (map car (do-counter exp)))
 (define (do-inits exp) (map cadr (do-counter exp)))
 (define (do-steps exp) (flatmap cddr (do-counter exp)))
+
+(define (flatmap proc seq)
+  (fold-right append '() (map proc seq)))
 
 (define (do-cond exp) (caddr exp))
 (define (do-test exp) (car (do-cond exp)))
@@ -116,5 +118,9 @@
 
 (define (main args)
   (print (equal? (do->named-let do-expression) do-derived))
+  ;=> #t
   (print (equal? (while->named-let (caddr while-expression)) (caddr while-derived)))
-  (print (equal? (until->named-let (caddr until-expression)) (caddr until-derived))))
+  ;=> #t
+  (print (equal? (until->named-let (caddr until-expression)) (caddr until-derived)))
+  ;=> #t
+  )

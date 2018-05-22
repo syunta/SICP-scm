@@ -1,4 +1,4 @@
-(load "../../lib/stream")
+(load "./stream")
 
 (define (integral delayed-integrand initial-value dt)
   (cons-stream initial-value

@@ -1,4 +1,4 @@
-(load "../../lib/stream")
+(load "./stream")
 
 ;  +-------+             +--------+
 ;  |map: f |---- ddy --->|integral|<-- dy0

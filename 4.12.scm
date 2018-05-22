@@ -1,4 +1,4 @@
-(load "../../lib/eval-apply")
+(load "./eval-apply")
 
 (define (scan-env env found not-found)
   (if (eq? env the-empty-environment)

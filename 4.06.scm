@@ -1,4 +1,4 @@
-(load "../../lib/eval-apply")
+(load "./eval-apply")
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
