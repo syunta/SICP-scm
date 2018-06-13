@@ -4,6 +4,7 @@
 ; (+ 1 2 3 4) => (+ (+ (+ 1 2) 3) 4) のように解釈する
 ; arg1に計算結果をためて、arg2には2個目以降の被演算子を代入していく
 
+; target を val にしない方が効率の良いコードを生成する
 (define (spread-arguments operands)
   (let ((operand-codes
           (map (lambda (operand) (compile operand 'val 'next))
