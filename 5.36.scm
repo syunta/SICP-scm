@@ -1,6 +1,5 @@
-(add-load-path "../../lib" :relative)
-(load "../../lib/load-eceval-compiler")
-(load "../../lib/compiler")
+(load "./load-eceval-compiler")
+(load "./compiler")
 
 ; 右から左に評価される
 
